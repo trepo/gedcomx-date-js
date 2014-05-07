@@ -45,6 +45,18 @@ describe('Simple', function(){
       }).to.throw(Error);
     });
 
+    it('should error on +1000_01', function(){
+      expect(function() {
+        var simple = new Simple('+1000_01');
+      }).to.throw(Error);
+    });
+
+    it('should error on +1000-1', function(){
+      expect(function() {
+        var simple = new Simple('+1000-1');
+      }).to.throw(Error);
+    });
+
     it('should parse +1000-01', function(){
       var simple = new Simple('+1000-01');
       expect(simple.getYear()).to.equal(1000);
@@ -59,13 +71,25 @@ describe('Simple', function(){
 
     it('should error on +1000-00', function(){
       expect(function() {
-        var simple = new Simple('1000-00');
+        var simple = new Simple('+1000-00');
       }).to.throw(Error);
     });
 
     it('should error on +1000-13', function(){
       expect(function() {
-        var simple = new Simple('1000-13');
+        var simple = new Simple('+1000-13');
+      }).to.throw(Error);
+    });
+
+    it('should error on +1000-01_01', function(){
+      expect(function() {
+        var simple = new Simple('+1000-01_01');
+      }).to.throw(Error);
+    });
+
+    it('should error on +1000-01-1', function(){
+      expect(function() {
+        var simple = new Simple('+1000-01-1');
       }).to.throw(Error);
     });
 
@@ -93,6 +117,12 @@ describe('Simple', function(){
       expect(simple.getYear()).to.equal(2008);
       expect(simple.getMonth()).to.equal(2);
       expect(simple.getDay()).to.equal(29);
+    });
+
+    it('should error on +2008-02-30', function(){
+      expect(function() {
+        var simple = new Simple('+2008-02-30');
+      }).to.throw(Error);
     });
 
     it('should error on +2007-02-29', function(){
@@ -127,6 +157,28 @@ describe('Simple', function(){
       }).to.throw(Error);
     });
 
+    it('should error on +2007-01-01B', function(){
+      expect(function() {
+        var simple = new Simple('+2007-01-01B');
+      }).to.throw(Error);
+    });
+
+    it('should parse +2000-01-01T12', function(){
+      var simple = new Simple('+2000-01-01T12');
+      expect(simple.getYear()).to.equal(2000);
+      expect(simple.getMonth()).to.equal(1);
+      expect(simple.getDay()).to.equal(1);
+      expect(simple.getHours()).to.equal(12);
+    });
+
+/*
+    it('should parse +2008-04-30T12:11:10', function(){
+      var simple = new Simple('+2008-04-30');
+      expect(simple.getYear()).to.equal(2008);
+      expect(simple.getMonth()).to.equal(4);
+      expect(simple.getDay()).to.equal(30);
+    });
+*/
     it('needs more testing');
   });
 
