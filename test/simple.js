@@ -7,13 +7,26 @@ describe('Simple', function(){
 
   describe("#()", function(){
     it('should initialize', function(){
-      var simple = new (Simple(function(){}))();
 
-      expect(simple).to.be.instanceof(Object);
+      var SimpleBogus = Simple(function(){}),
+          simple = new SimpleBogus();
+
       expect(simple.getSubtype()).to.equal('simple');
     });
 
-    // TODO test that Simple is instance of the parent function
+    it('should inherit properly', function(){
+
+      function Bogus(){
+        this.name = 'bogus';
+        this.func = function(){return 'blue'};
+      };
+
+      var simple = new (Simple(Bogus))();
+
+      expect(simple.name).to.equal('bogus');
+      expect(simple).to.respondTo('func');
+      expect(simple.getSubtype()).to.equal('simple');
+    });
 
   });
 
