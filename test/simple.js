@@ -382,15 +382,6 @@ describe('Simple', function(){
       }).to.throw(Error);
     });
 
-/*
-    it('should parse +2008-04-30T12:11:10', function(){
-      var simple = new Simple('+2008-04-30');
-      expect(simple.getYear()).to.equal(2008);
-      expect(simple.getMonth()).to.equal(4);
-      expect(simple.getDay()).to.equal(30);
-    });
-*/
-    it('needs more testing');
   });
 
   describe("#getType()", function(){
