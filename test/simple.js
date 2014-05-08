@@ -385,11 +385,11 @@ describe('Simple', function(){
   });
 
   describe("#getType()", function(){
-    it('should return simple', function(){
+    it('should return single', function(){
 
       var simple = new Simple();
 
-      expect(simple.getType()).to.equal('simple');
+      expect(simple.getType()).to.equal('single');
     });
 
   });

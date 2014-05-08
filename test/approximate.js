@@ -46,11 +46,11 @@ describe('Approximate', function(){
   });
 
   describe("#getType()", function(){
-    it('should return approximate', function(){
+    it('should return single', function(){
 
       var approximate = new Approximate();
 
-      expect(approximate.getType()).to.equal('approximate');
+      expect(approximate.getType()).to.equal('single');
     });
 
   });
