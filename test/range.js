@@ -79,16 +79,16 @@ describe('Range', function(){
       expect(range.start.getTZHours()).to.equal(0);
       expect(range.start.getTZMinutes()).to.equal(0);
 
-      expect(range.end.getType()).to.equal('duration');
-      expect(range.end.getYears()).to.equal(1000);
-      expect(range.end.getMonths()).to.equal(1);
-      expect(range.end.getDays()).to.equal(2);
-      expect(range.end.getHours()).to.equal(3);
-      expect(range.end.getMinutes()).to.equal(4);
-      expect(range.end.getSeconds()).to.equal(5);
+      expect(range.duration.getType()).to.equal('duration');
+      expect(range.duration.getYears()).to.equal(1000);
+      expect(range.duration.getMonths()).to.equal(1);
+      expect(range.duration.getDays()).to.equal(2);
+      expect(range.duration.getHours()).to.equal(3);
+      expect(range.duration.getMinutes()).to.equal(4);
+      expect(range.duration.getSeconds()).to.equal(5);
 
       expect(range.start).to.be.instanceof(Simple);
-      expect(range.end).to.be.instanceof(Duration);
+      expect(range.duration).to.be.instanceof(Duration);
 
       expect(range.start.isApproximate()).to.equal(false);
     });
