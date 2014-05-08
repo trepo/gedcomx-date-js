@@ -9,7 +9,7 @@ describe('Recurring', function(){
   describe("#(start, end)", function(){
     it('should initialize', function(){
 
-      var recurring = new Recurring('+1000', null, null);
+      var recurring = new Recurring(null, '+1000', null);
 
       expect(recurring).to.be.instanceof(Object);
     });
@@ -18,7 +18,7 @@ describe('Recurring', function(){
   describe("#getType()", function(){
     it('should return recurring', function(){
 
-      var recurring = new Recurring('+1000', null, null);
+      var recurring = new Recurring(null, '+1000', null);
 
       expect(recurring.getType()).to.equal('recurring');
     });

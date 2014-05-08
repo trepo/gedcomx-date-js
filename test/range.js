@@ -123,6 +123,22 @@ describe('Range', function(){
       }).to.throw(Error);
     });
 
+    it('should calculate range correctly', function(){
+      var range = new Range('+1000-02-03','+2000');
+
+      expect(range.duration.getYears()).to.equal(999);
+      expect(range.duration.getMonths()).to.equal(10);
+      expect(range.duration.getDays()).to.equal(29);
+    });
+
+    it('should calculate tricky range correctly', function(){
+      var range = new Range('+1970-01-31','+1973-02-01');
+
+      expect(range.duration.getYears()).to.equal(2);
+      expect(range.duration.getMonths()).to.equal(11);
+      expect(range.duration.getDays()).to.equal(29);
+    });
+
   });
 
   describe("#getType()", function(){
@@ -136,9 +152,9 @@ describe('Range', function(){
   });
 
   describe("#isApproximate()", function(){
-    it('should return true for A+2000 A+2000', function(){
+    it('should return true for A+2000 A+2001', function(){
 
-      var range = new Range('A+2000','A+2000');
+      var range = new Range('A+2000','A+2001');
 
       expect(range.isApproximate()).to.equal(true);
     });
