@@ -123,6 +123,31 @@ Returns the `number` of times this date recurs, or javascript `Infinity`.  Also 
 
 
 ## Duration
+Represents a duration of time.
+
+### getType()
+Returns the `string` 'duration'.
+
+### isApproximate()
+Returns the `boolean` false, as a duration is never approximate according to the spec.
+
+### getYears()
+Returns the years as a `number` or `undefined`.
+
+### getMonths()
+Returns the months as a `number` or `undefined`.
+
+### getDays()
+Returns the days as a `number` or `undefined`.
+
+### getHours()
+Returns the hours as a `number` or `undefined`.
+
+### getMinutes()
+Returns the minutes as a `number` or `undefined`.
+
+### getSeconds()
+Returns the seconds as a `number` or `undefined`.
 
 
 
