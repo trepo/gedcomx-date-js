@@ -29,7 +29,7 @@ describe('Simple', function(){
       expect(simple.getYear()).to.equal(1000);
     });
 
-    it('should parse +0010', function(){
+    it('should parse -0010', function(){
       var simple = new Simple('-0010');
       expect(simple.getYear()).to.equal(-10);
     });

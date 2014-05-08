@@ -35,6 +35,9 @@ describe('Range', function(){
       expect(range.end.getTZHours()).to.equal(0);
       expect(range.end.getTZMinutes()).to.equal(0);
 
+      expect(range.start).to.be.instanceof(Approximate);
+      expect(range.end).to.be.instanceof(Approximate);
+
       expect(range.start.isApproximate()).to.equal(true);
     });
 
@@ -57,6 +60,9 @@ describe('Range', function(){
       expect(range.end.getSeconds()).to.equal(0);
       expect(range.end.getTZHours()).to.equal(0);
       expect(range.end.getTZMinutes()).to.equal(0);
+
+      expect(range.start).to.be.instanceof(Simple);
+      expect(range.end).to.be.instanceof(Simple);
 
       expect(range.start.isApproximate()).to.equal(false);
     });
@@ -108,6 +114,9 @@ describe('Range', function(){
     it('should return true for null A+2000', function(){
 
       var range = new Range(null,'A+2000');
+
+      expect(range.start).to.be.equal(undefined);
+      expect(range.end).to.be.instanceof(Approximate);
 
       expect(range.isApproximate()).to.equal(true);
     });
