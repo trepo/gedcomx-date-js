@@ -10,6 +10,8 @@ A GEDCOM-X Date Parser for Javascript, fully compliant with the [spec](https://g
 * Finish and move _getDateFromDuration in Range
 * Finish informal duration parsing
 * Add getNthInstance() to Recurring
+* Add util function to multiply duration by a float
+* Add util function to add duration to single date
 * finish comment blocks on every function
 
 # Download

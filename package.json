@@ -6,9 +6,13 @@
     "url": "git@github.com:trepo/gedcomx-date-js.git"
   },
   "main": "lib/gedcomx-date.js",
+  "scripts": {
+    "build": "./node_modules/browserify/bin/cmd.js lib/gedcomx-date.js -s GedcomXDate -o GedcomXDate.js"
+  },
   "dependencies": {
   },
   "devDependencies": {
-    "chai": "~1.9.1"
+    "chai": "~1.9.1",
+    "browserify": "~3.46.0"
   }
 }
