@@ -37,6 +37,12 @@ describe('Approximate', function(){
       }).to.throw(Error);
     });
 
+    it('should error on A+2000-01-01T24:00:00ZB', function(){
+      expect(function() {
+        var approximate = new Approximate('A+2000-01-01T24:00:00ZB');
+      }).to.throw(Error);
+    });
+
   });
 
   describe("#getType()", function(){
