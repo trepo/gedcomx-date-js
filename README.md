@@ -1,5 +1,15 @@
 # gedcomx-date-js
-A GEDCOM-X Date Parser for Javascript, fully compliant with the [spec]() and patterned after jsvascript's `Date` object.
+A GEDCOM-X Date Parser for Javascript, fully compliant with the [spec](https://github.com/FamilySearch/gedcomx/blob/master/specifications/date-format-specification.md) and patterned after jsvascript's `Date` object.
+
+# TODO
+
+* Always set TZ offset to 00:00 when parsing single dates
+* Finish testing coverage
+* Browserify
+* Fix single tests to also check for error string (like range)
+* Finish and move _getDateFromDuration in Range
+* Finish informal duration parsing
+* Add getNthInstance() to Recurring
 
 # Download
 
@@ -10,65 +20,105 @@ npm install gedcomx-date
 ````
 
 ## Browser
-Download this file
+// TODO
 
 # Tests
 
 There is a fairly comprehensive test suite.
 ````bash
-cd /path/to/cloned/repo
+# To run the tests cd to the repo directory and run
 mocha
-````
 
-To see code coverage run
-````bash
-cd /path/to/cloned/repo
+# To generate the code coverage run
 ./coverage/generate.sh
 ````
-Open ./coverage/coverage.html in your browser to view the coverage report.
-
-Note: make sure you install [jscoverage](https://github.com/visionmedia/node-jscoverage) first.
+Note: make sure you install [jscoverage](https://github.com/visionmedia/node-jscoverage) globally before generating coverage.
 
 
 # Reference
+When you create a new GedcomXDate you pass in a formal date string into the contructor.
+It will parse and validate the string, and return an object representation of it.
+If there is a parsing error GedcomXDate with throw an error.
 
-## Constructor
-Returns a GedcomXDate Object representing now or the datestring. // TODO fix this and sync with Constructor Parameters
-
+## Simple
 ````javascript
-new GedcomXDate();
-new GedcomXDate(type);
-new GedcomXDate(type, subtype);
-new GedcomXDate(type, subtype, subtype);
-new GedcomXDate(dateString);
+var date = new GedcomXDate('A+2000-01-01');
+// date will be a Simple Date
 ````
 
-### Constructor Parameters
-If no parameters are passed in, GedcomXDate will be a single simple Date.
-If type is passed in, GedcomXDate will be a simple Date of that type.
+### getType()
+Returns the `string` 'single'.
 
-**type**  
-The type of the GedcomXDate. Possible string values are `single`, `range`, and `recurring`.
+### isApproximate()
+Returns a `boolean` as to whether or not the date is approximate.
 
-**subtype**  
-The type of the GedcomXDate. Possible string values are `simple`, `approximate`, and `duration`.
-Note that two subtypes are required for `range` and `recurring`
+### getYear()
+Returns the year as a `number` or `undefined`.
 
-**dateString**  
-A formal GEDCOM-X Date String according to the spec
+### getMonth()
+Returns the month as a `number` or `undefined`.
 
-### Description
-If a dateString is provided but is invalid, throws an `Invalid Date` error
+### getDay()
+Returns the day as a `number` or `undefined`.
 
-## Object Methods
+### getHours()
+Returns the hours as a `number` or `undefined`.
 
-### Date.parse(dateString)
-Equivelent to new Date(dateString)
+### getMinutes()
+Returns the minutes as a `number` or `undefined`.
 
-## Instance Methods
+### getSeconds()
+Returns the seconds as a `number` or `undefined`.
+
+### getTZHours()
+Returns the timezone offset hours as a `number` or `undefined`.
+
+### getTZMinutes()
+Returns the timezone offset minutes as a `number` or `undefined`.
+
+
+
+## Range
+A range has three components, start, end, and duration
+````javascript
+var date = GedcomXDate('A+1000-01-01/2000-12-31');
+
+// date.start will be a simple date
+// date.end will be a simple date
+// date.duration will be a duration
+````
 
 ### getType()
+Returns the `string` 'range'.
 
-### getSubType()
+### isApproximate()
+Returns a `boolean` as to whether or not the date is approximate.
 
-### toString()
+
+
+## Recurring
+A Recurring date is the same as a Range with a few more methods.
+````javascript
+var date = GedcomXDate('A+1000-01-01/2000-12-31');
+
+// date.start will be a simple date
+// date.end will be a simple date representing the first recurrence
+// date.duration will be a duration
+````
+
+### getType()
+Returns the `string` 'recurring'.
+
+### isApproximate()
+Returns a `boolean` as to whether or not the date is approximate.
+
+### getCount()
+Returns the `number` of times this date recurs, or javascript `Infinity`.
+
+
+## Utils
+There are a few convinience functions exposed through the main object
+
+### GedcomXDate.getDuration(startDate, endDate)
+
+### GedcomXDate.daysInMonth(month, year)
