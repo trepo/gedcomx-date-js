@@ -5,8 +5,7 @@ A GEDCOM-X Date Parser for Javascript, fully compliant with the [spec](https://g
 
 * Always set TZ offset to 00:00 when parsing single dates
 * Finish testing coverage
-* Browserify
-* Fix single tests to also check for error string (like range)
+* Fix single/simple tests to also check for error string (like range)
 * Finish and move _getDateFromDuration in Range
 * Finish informal duration parsing
 * Add getNthInstance() to Recurring
@@ -23,7 +22,8 @@ npm install gedcomx-date
 ````
 
 ## Browser
-// TODO
+Download `GedcomXDate.js` and enjoy.
+(Packaged with love by [browserify](http://browserify.org/))
 
 # Tests
 
