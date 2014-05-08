@@ -25,4 +25,17 @@ describe('Recurring', function(){
 
   });
 
+  describe("#getCount()", function(){
+    it('should return Infinity', function(){
+      var recurring = new Recurring(null, '+1000', null);
+      expect(recurring.getCount()).to.equal(Infinity);
+    });
+
+    it('should return 10', function(){
+      var recurring = new Recurring(10, '+1000', null);
+      expect(recurring.getCount()).to.equal(10);
+    });
+
+  });
+
 });

@@ -139,6 +139,19 @@ describe('Range', function(){
       expect(range.duration.getDays()).to.equal(29);
     });
 
+    it('should calculate approximate duration', function(){
+      var range = new Range('A+1000','P1000Y');
+
+      expect(range.end.getYear()).to.equal(2000);
+      expect(range.end.isApproximate()).to.equal(true);
+    });
+
+    it('should error on null P1Y', function(){
+      expect(function() {
+        var range = new Range(null, 'P1Y');
+      }).to.throw(Error);
+    });
+
   });
 
   describe("#getType()", function(){
@@ -183,6 +196,27 @@ describe('Range', function(){
       expect(range.isApproximate()).to.equal(false);
     });
 
+  });
+
+  describe("#getStart()", function(){
+    it('should return start', function(){
+      var range = new Range('+2000', null);
+      expect(range.getStart()).to.be.instanceof(Simple);
+    });
+  });
+
+  describe("#getDuration()", function(){
+    it('should return duration', function(){
+      var range = new Range('+2000', 'P0100Y');
+      expect(range.getDuration()).to.be.instanceof(Duration);
+    });
+  });
+
+  describe("#getEnd()", function(){
+    it('should return end', function(){
+      var range = new Range(null, '+2000');
+      expect(range.getEnd()).to.be.instanceof(Simple);
+    });
   });
 
 });
