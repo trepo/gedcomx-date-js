@@ -1,0 +1,14 @@
+{
+  "name": "gedcomx-date",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:trepo/gedcomx-date-js.git"
+  },
+  "main": "lib/gedcomx-date.js",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "chai": "~1.9.1"
+  }
+}

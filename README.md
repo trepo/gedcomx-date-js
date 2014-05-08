@@ -1,5 +1,5 @@
 # gedcomx-date-js
-A GEDCOM-X Date Parser for Javascript, fully compliant with the [spec](https://github.com/FamilySearch/gedcomx/blob/master/specifications/date-format-specification.md) and patterned after jsvascript's `Date` object.
+A GEDCOM-X Date Parser for Javascript, fully compliant with the [spec](https://github.com/FamilySearch/gedcomx/blob/master/specifications/date-format-specification.md) and patterned after javascript's `Date` object.
 
 # TODO
 
@@ -10,6 +10,7 @@ A GEDCOM-X Date Parser for Javascript, fully compliant with the [spec](https://g
 * Finish and move _getDateFromDuration in Range
 * Finish informal duration parsing
 * Add getNthInstance() to Recurring
+* finish comment blocks on every function
 
 # Download
 
@@ -94,16 +95,20 @@ Returns the `string` 'range'.
 ### isApproximate()
 Returns a `boolean` as to whether or not the date is approximate.
 
+### getStart()
+Returns a Single or `undefined`. Also accessible via the attribute `start`.
+
+### getDuration()
+Returns a Duration or `undefined`. Also accessible via the attribute `duration`.
+
+### getEnd()
+Returns a Single or `undefined`. Also accessible via the attribute `end`.
 
 
 ## Recurring
 A Recurring date is the same as a Range with a few more methods.
 ````javascript
-var date = GedcomXDate('A+1000-01-01/2000-12-31');
-
-// date.start will be a simple date
-// date.end will be a simple date representing the first recurrence
-// date.duration will be a duration
+var date = GedcomXDate('R2/+1000-01-01/2000-12-31');
 ````
 
 ### getType()
@@ -113,7 +118,12 @@ Returns the `string` 'recurring'.
 Returns a `boolean` as to whether or not the date is approximate.
 
 ### getCount()
-Returns the `number` of times this date recurs, or javascript `Infinity`.
+Returns the `number` of times this date recurs, or javascript `Infinity`.  Also accessible via the attribute `count`.
+
+
+
+## Duration
+
 
 
 ## Utils
