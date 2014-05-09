@@ -280,6 +280,21 @@ describe('Simple', function(){
       expect(simple.getSeconds()).to.equal(undefined);
     });
 
+    it('should default to current tz', function(){
+      var tempDate = new Date(),
+          tempOffset = tempDate.getTimezoneOffset();
+
+      var simple = new Simple('+2000-01-01T12:00:00');
+      expect(simple.getYear()).to.equal(2000);
+      expect(simple.getMonth()).to.equal(1);
+      expect(simple.getDay()).to.equal(1);
+      expect(simple.getHours()).to.equal(12);
+      expect(simple.getMinutes()).to.equal(0);
+      expect(simple.getSeconds()).to.equal(0);
+      expect(simple.getTZHours()).to.equal(tempOffset/60);
+      expect(simple.getTZMinutes()).to.equal(tempOffset%60);
+    });
+
     it('should parse +2000-01-01T24:00:00Z', function(){
       var simple = new Simple('+2000-01-01T24:00:00Z');
       expect(simple.getYear()).to.equal(2000);
@@ -301,7 +316,7 @@ describe('Simple', function(){
       expect(simple.getMinutes()).to.equal(0);
       expect(simple.getSeconds()).to.equal(0);
       expect(simple.getTZHours()).to.equal(12);
-      expect(simple.getTZMinutes()).to.equal(undefined);
+      expect(simple.getTZMinutes()).to.equal(0);
     });
 
     it('should parse +2000-01-01T24+12', function(){
@@ -313,11 +328,11 @@ describe('Simple', function(){
       expect(simple.getMinutes()).to.equal(undefined);
       expect(simple.getSeconds()).to.equal(undefined);
       expect(simple.getTZHours()).to.equal(12);
-      expect(simple.getTZMinutes()).to.equal(undefined);
+      expect(simple.getTZMinutes()).to.equal(0);
     });
 
     it('should parse +2000-01-01T24:00+12', function(){
-      var simple = new Simple('+2000-01-01T24:00+12');
+      var simple = new Simple('+2000-01-01T24:00+12:30');
       expect(simple.getYear()).to.equal(2000);
       expect(simple.getMonth()).to.equal(1);
       expect(simple.getDay()).to.equal(1);
@@ -325,7 +340,7 @@ describe('Simple', function(){
       expect(simple.getMinutes()).to.equal(0);
       expect(simple.getSeconds()).to.equal(undefined);
       expect(simple.getTZHours()).to.equal(12);
-      expect(simple.getTZMinutes()).to.equal(undefined);
+      expect(simple.getTZMinutes()).to.equal(30);
     });
 
     it('should error on +2000-01-01T24:00:00Z1', function(){

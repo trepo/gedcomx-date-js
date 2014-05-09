@@ -3,17 +3,16 @@ A GEDCOM-X Date Parser for Javascript, fully compliant with the [spec](https://g
 
 # TODO
 
-* Always default TZ offset to local offset? when parsing simple dates
-* Finish testing coverage
-* Fix single/simple tests to also check for error string (like range)
-* Change _getDateFromDuration in Range to call addDuration()
-* Finish informal duration parsing
-* Add getNthInstance() to Recurring (calls multiplyDuration() and addDuration() )
-* Add util function multiplyDuration(duration, float) -> return duration
 * Add util function addDuration(date, duration) -> returns date
+* Change _getDateFromDuration in Range to call addDuration()
+* Add util function multiplyDuration(duration, float) -> return duration
+* Add getNthInstance() to Recurring (calls multiplyDuration() and addDuration() )
+* add toFormalString()
+* Fix single/simple tests to also check for error string (like range)
+* Finish informal duration parsing
 * finish comment blocks on every function
 * override getEnd on recurring to return Infinity or last nth instance
-* add toFormalString()
+* Finish testing coverage
 
 # Download
 
