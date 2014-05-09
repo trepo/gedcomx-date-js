@@ -34,13 +34,13 @@ describe('Approximate', function(){
     it('should error on +2000-01-01T24:00:00Z', function(){
       expect(function() {
         var approximate = new Approximate('+2000-01-01T24:00:00Z');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Approximate Date');
     });
 
     it('should error on A+2000-01-01T24:00:00ZB', function(){
       expect(function() {
         var approximate = new Approximate('A+2000-01-01T24:00:00ZB');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: malformed timezone in Approximate Date');
     });
 
   });

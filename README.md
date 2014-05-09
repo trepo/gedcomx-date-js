@@ -3,12 +3,12 @@ A GEDCOM-X Date Parser for Javascript, fully compliant with the [spec](https://g
 
 # TODO
 
-* Always set TZ offset to 00:00 when parsing single dates
+* Always default TZ offset to local offset? when parsing simple dates
 * Finish testing coverage
 * Fix single/simple tests to also check for error string (like range)
 * Finish and move _getDateFromDuration in Range
 * Finish informal duration parsing
-* Add getNthInstance() to Recurring
+* Add getNthInstance() to Recurring (calls multiply and add functions)
 * Add util function to multiply duration by a float
 * Add util function to add duration to single date
 * finish comment blocks on every function
@@ -43,10 +43,10 @@ When you create a new GedcomXDate you pass in a formal date string into the cont
 It will parse and validate the string, and return an object representation of it.
 If there is a parsing error GedcomXDate with throw an error.
 
-## Simple
+## Single
 ````javascript
 var date = new GedcomXDate('A+2000-01-01');
-// date will be a Simple Date
+// date will be a Single Date
 ````
 
 ### getType()
