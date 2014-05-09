@@ -12,17 +12,19 @@ A GEDCOM-X Date Parser for Javascript, fully compliant with the [spec](https://g
 * Add util function multiplyDuration(duration, float) -> return duration
 * Add util function addDuration(date, duration) -> returns date
 * finish comment blocks on every function
+* override getEnd on recurring to return Infinity or last nth instance
+* add toFormalString()
 
 # Download
 
 ## Node.js
-You can install vGraph by cloning this repository or by using npm
+You can install vGraph by cloning this repository or by using npm.
 ````bash
 npm install gedcomx-date
 ````
 
 ## Browser
-Download `GedcomXDate.js` and enjoy.
+Download [GedcomXDate.js](GedcomXDate.js) and enjoy.
 (Packaged with love by [browserify](http://browserify.org/))
 
 # Tests
@@ -122,10 +124,16 @@ Returns a `boolean` as to whether or not the date is approximate.
 ### getCount()
 Returns the `number` of times this date recurs, or javascript `Infinity`.  Also accessible via the attribute `count`.
 
-
+### getEnd()
+Returns the last instance of the recurring date or `undefined`.
 
 ## Duration
 Represents a duration of time.
+````javascript
+var date = GedcomXDate('A+1000-01-01/2000-12-31');
+
+var duration = date.getDuration();
+````
 
 ### getType()
 Returns the `string` 'duration'.
@@ -154,8 +162,19 @@ Returns the seconds as a `number` or `undefined`.
 
 
 ## Utils
-There are a few convinience functions exposed through the main object
+There are a few convinience functions and attributes exposed through the main object
+
+### GedcomXDate.version
+Will be a string set to the version of GedcomXDate. 
 
 ### GedcomXDate.getDuration(startDate, endDate)
+Returns the Duration between the startDate and endDate, or throws an error if startDate >= endDate
 
 ### GedcomXDate.daysInMonth(month, year)
+Returns the number of days in the month for the given year.
+
+### GedcomXDate.addDuration(date, duration)
+Adds duration to date and returns a new Single date.
+
+### GedcomXDate.multiplyDuration(duration, number)
+Multiplies a duration by a positive number and returns a new Duration.

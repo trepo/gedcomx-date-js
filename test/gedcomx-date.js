@@ -1,5 +1,6 @@
 var libPath = process.env.VGRAPH_COV ? '../lib-cov' : '../lib',
     path = require('path'),
+    fs = require('fs'),
     expect = require('chai').expect,
     Simple = require(path.join(libPath, 'simple.js')),
     Approximate = require(path.join(libPath, 'approximate.js')),
@@ -9,6 +10,36 @@ var libPath = process.env.VGRAPH_COV ? '../lib-cov' : '../lib',
     GedcomXDate = require(path.join(libPath, 'gedcomx-date.js'));
 
 describe('GedcomXDate', function(){
+
+  describe("#version", function(){
+    it('should match package.json', function(){
+      
+      var packageString = fs.readFileSync(path.join(__dirname,'../', 'package.json')).toString();
+
+      var packageObj = JSON.parse(packageString);
+
+      expect(GedcomXDate.version).to.equal(packageObj.version);
+
+    });
+  });
+
+  describe("#getDuration()", function(){
+    it('should respond to getDuration', function(){
+
+      var duration = GedcomXDate.getDuration(new Simple('+1000'), new Simple('+2000'));
+
+      expect(duration.getYears()).to.equal(1000);
+
+    });
+  });
+
+  describe("#daysInMonth()", function(){
+    it('should respond to daysInMonth', function(){
+
+      expect(GedcomXDate.daysInMonth(2,2004)).to.equal(29);
+
+    });
+  });
 
   describe("#(str)", function(){
     it('should return Simple', function(){
