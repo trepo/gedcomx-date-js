@@ -32,6 +32,13 @@ Approximate.prototype.isApproximate = function() {
   return true;
 }
 
+/**
+ * Output Formalized approximate string.
+ */
+Approximate.prototype.toFormalString = function() {
+  return 'A'+Approximate.super_.prototype.toFormalString.call(this);
+}
+
 module.exports = Approximate;
 },{"./simple.js":6,"util":12}],2:[function(_dereq_,module,exports){
 /**
@@ -252,6 +259,43 @@ Duration.prototype.getSeconds = function() {
   return this._seconds;
 }
 
+/**
+ * Output Formalized duration string.
+ */
+Duration.prototype.toFormalString = function() {
+  var duration = 'P';
+
+  if(this._years) {
+    duration += this._years+'Y';
+  }
+
+  if(this._months) {
+    duration += this._months+'M';
+  }
+
+  if(this._days) {
+    duration += this._days+'D';
+  }
+
+  if(this._hours || this._minutes || this._seconds) {
+    duration += 'T';
+
+    if(this._hours) {
+      duration += this._hours+'H';
+    }
+
+    if(this._minutes) {
+      duration += this._minutes+'M';
+    }
+
+    if(this._seconds) {
+      duration += this._seconds+'S';
+    }
+  }
+
+  return duration;
+}
+
 module.exports = Duration;
 },{}],3:[function(_dereq_,module,exports){
 var GedUtil = _dereq_('./util.js'),
@@ -273,17 +317,9 @@ function GedcomXDate(str) {
   }
 
   if(str.charAt(0) == 'R') {
-    var parts = str.substr(1).split('/');
-    if(parts.length != 3) {
-      throw new Error('Invalid Recurring Date');
-    }
-    return new Recurring(parts[0], parts[1], parts[2]);
+    return new Recurring(str);
   } else if(/\//.test(str)) {
-    var parts = str.substr(0).split('/');
-    if(parts.length != 2) {
-      throw new Error('Invalid Date Range');
-    }
-    return new Range(parts[0], parts[1]);
+    return new Range(str);
   } else if(str.charAt(0) == 'A') {
     return new Approximate(str);
   } else {
@@ -294,7 +330,7 @@ function GedcomXDate(str) {
 /**
  * The version of this library.
  */
-GedcomXDate.version = '0.1.0';
+GedcomXDate.version = '0.2.0';
 
 /**
  * Expose addDuration.
@@ -328,52 +364,45 @@ var GedUtil = _dereq_('./util.js'),
  * It will place a Singel date at this.start and this.end,
  * as well as a Duration at this.duration.
  */
-function Range(startString, endString) {
+function Range(str) {
 
-  if(startString && startString.length > 0) {
-    if(startString.charAt(0) == 'A') {
-      try {
-        this.start = new Approximate(startString);
-      } catch(e) {
-        throw new Error(e.message+' in Range Start Date');
-      }
-    } else {
-      try {
-        this.start = new Simple(startString);
-      } catch(e) {
-        throw new Error(e.message+' in Range Start Date');
-      }
+  var range = str;
+
+  // If range starts with A, its approximate
+  if(range.charAt(0) == 'A') {
+    this._approximate = true;
+    range = str.substr(1);
+  }
+
+  var parts = range.split('/');
+
+  if(parts.length != 2 || (!parts[0] && !parts[1])) {
+    throw new Error('Invalid Date Range');
+  }
+
+  if(parts[0]) {
+    try {
+      this.start = new Simple(parts[0]);
+    } catch(e) {
+      throw new Error(e.message+' in Range Start Date');
     }
   }
 
-  if(endString && endString.length > 0) {
-    if(endString.charAt(0) == 'A') {
-      try {
-        this.end = new Approximate(endString);
-      } catch(e) {
-        throw new Error(e.message+' in Range End Date');
-      }
-      if(this.start) {
-        this.duration = GedUtil.getDuration(this.start, this.end);
-      }
-    } else if(endString.charAt(0) == 'P') {
-
-      // If we have no start date, this is invalid
+  if(parts[1]) {
+    if(parts[1].charAt(0) == 'P') {
       if(!this.start) {
         throw new Error('A Range may not end with a duration if missing a start date');
       }
-
       try {
-        this.duration = new Duration(endString);
+        this.duration = new Duration(parts[1]);
       } catch(e) {
         throw new Error(e.message+' in Range End Date');
       }
-
       // Use duration and calculate end date
       this.end = GedUtil.addDuration(this.start, this.duration);
     } else {
       try {
-        this.end = new Simple(endString);
+        this.end = new Simple(parts[1]);
       } catch(e) {
         throw new Error(e.message+' in Range End Date');
       }
@@ -393,16 +422,14 @@ Range.prototype.getType = function() {
 }
 
 /**
- * Return true if either start or end is approximate.
+ * Return true if range is approximate.
  */
 Range.prototype.isApproximate = function() {
-  if(this.start && this.start.isApproximate()) {
+  if(this._approximate) {
     return true;
+  } else {
+    return false;
   }
-  if(this.end && this.end.isApproximate()) {
-    return true;
-  }
-  return false;
 }
 
 /**
@@ -426,6 +453,30 @@ Range.prototype.getEnd = function() {
   return this.end;
 }
 
+/**
+ * Output Formalized range string.
+ */
+Range.prototype.toFormalString = function() {
+  var range = '';
+
+  if(this._approximate) {
+    range += 'A';
+  }
+
+  if(this.start) {
+    range += this.start.toFormalString();
+  }
+  range += '/';
+
+  if(this.duration) {
+    range += this.duration.toFormalString();
+  } else if(this.end) {
+    range += this.end.toFormalString();
+  }
+
+  return range;
+}
+
 module.exports = Range;
 },{"./approximate.js":1,"./duration.js":2,"./simple.js":6,"./util.js":8}],5:[function(_dereq_,module,exports){
 var util = _dereq_('util'),
@@ -435,12 +486,20 @@ var util = _dereq_('util'),
 /**
  * A GedcomX Recurring Date.
  */
-function Recurring(countNum, startString, endString) {
+function Recurring(str) {
   
+  var parts = str.split('/');
+
+  if(str.charAt(0) != 'R' || parts.length != 3) {
+    throw new Error('Invalid Recurring Date');
+  }
+
   // We must have start and end. error if both aren't set
-  if(!startString || !endString) {
+  if(!parts[1] || !parts[2]) {
     throw new Error('Recurring must have a start and end');
   }
+
+  var countNum = parts[0].substr(1);
 
   // Validate count is a number if set
   if(countNum) {
@@ -451,7 +510,7 @@ function Recurring(countNum, startString, endString) {
     if(this.count < 0) throw new Error('Invalid recurrence count');
   }
 
-  Range.call(this, startString, endString);
+  Range.call(this, parts[1]+'/'+parts[2]);
 
   // If we have a count, replace end with the actual end date or undefined.
   delete this.end;
@@ -489,6 +548,19 @@ Recurring.prototype.getNth = function(multiplier) {
 
   return GedUtil.addDuration(this.start, duration);
   
+}
+
+/**
+ * Output Formalized range string.
+ */
+Recurring.prototype.toFormalString = function() {
+  var range = Recurring.super_.prototype.toFormalString.call(this);
+
+  if(this.count) {
+    return 'R'+this.count+'/'+range;
+  } else {
+    return 'R/'+range;
+  }
 }
 
 module.exports = Recurring;
@@ -844,6 +916,63 @@ Simple.prototype.getTZHours = function() {
  */
 Simple.prototype.getTZMinutes = function() {
   return this._tzMinutes;
+}
+
+/**
+ * Output Formalized simple string.
+ */
+Simple.prototype.toFormalString = function() {
+  var simple = '';
+
+  if(this._year >= 0) {
+    simple += '+'+('0000'+this._year).substr(-4,4);
+  } else {
+    simple += '-'+('0000'+Math.abs(this._year)).substr(-4,4);
+  }
+
+  if(this._month) {
+    simple += '-'+('00'+this._month).substr(-2,2);
+  }
+
+  if(this._day) {
+    simple += '-'+('00'+this._day).substr(-2,2);
+  }
+
+  if(this._hours != undefined || this._minutes != undefined || this._seconds != undefined) {
+    simple += 'T';
+  }
+
+  if(this._hours != undefined) {
+    simple += ('00'+this._hours).substr(-2,2);
+  }
+
+  if(this._minutes != undefined) {
+    simple += ':'+('00'+this._minutes).substr(-2,2);
+  }
+
+  if(this._seconds != undefined) {
+    simple += ':'+('00'+this._seconds).substr(-2,2);
+  }
+
+  if(this._hours != undefined || this._minutes != undefined || this._seconds != undefined) {
+    if(this._tzHours === 0 || this._tzMinutes === 0) {
+      simple += 'Z';
+    } else {
+      if(this._tzHours != undefined) {
+        if(this._tzHours >= 0) {
+          simple += '+';
+        } else {
+          simple += '-';
+        }
+        simple += ('00'+Math.abs(this._tzHours)).substr(-2,2);
+      }
+      if(this._tzMinutes != undefined) {
+        simple += ':'+('00'+this._tzMinutes).substr(-2,2);
+      }
+    }
+  }
+
+  return simple;
 }
 
 module.exports = Simple;
