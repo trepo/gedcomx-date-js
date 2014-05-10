@@ -11,6 +11,38 @@ var libPath = process.env.VGRAPH_COV ? '../lib-cov' : '../lib',
 
 describe('Util', function(){
 
+  describe("#multiplyDuration()", function(){
+    
+    it('should double', function(){
+
+      var initialDuration = new Duration('P1Y2M3DT4H5M6S'),
+          duration = GedcomXDate.multiplyDuration(initialDuration, 2);
+
+      expect(duration.getYears()).to.equal(2);
+      expect(duration.getMonths()).to.equal(4);
+      expect(duration.getDays()).to.equal(6);
+      expect(duration.getHours()).to.equal(8);
+      expect(duration.getMinutes()).to.equal(10);
+      expect(duration.getSeconds()).to.equal(12);
+
+    });
+
+    it('should error on invalid multiplier', function(){
+      var initialDuration = new Duration('P1Y');
+      expect(function() {
+        GedcomXDate.multiplyDuration(initialDuration, 'bogus');
+      }).to.throw(Error, 'Invalid Multiplier');
+    });
+
+    it('should create error on very small multiplier', function(){
+      var initialDuration = new Duration('P1Y');
+      expect(function() {
+        GedcomXDate.multiplyDuration(initialDuration, .001);
+      }).to.throw(Error, 'Invalid Duration Multiplier');
+    });
+
+  });
+
   describe("#addDuration()", function(){
     
     it('should pass through negative timezone', function(){
