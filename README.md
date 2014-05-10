@@ -111,7 +111,7 @@ Returns the formal GedcomX representation as a `string`.
 ## Range
 A range has three components, start, end, and duration
 ````javascript
-var date = GedcomXDate('A+1000-01-01/2000-12-31');
+var date = GedcomXDate('A+1000-01-01/+2000-12-31');
 
 // date.start will be a simple date
 // date.end will be a simple date
@@ -136,10 +136,11 @@ Returns a Single or `undefined`. Also accessible via the attribute `end`.
 ### toFormalString()
 Returns the formal GedcomX representation as a `string`.
 
+
 ## Recurring
 A Recurring date is the same as a Range with a few more methods.
 ````javascript
-var date = GedcomXDate('R2/+1000-01-01/2000-12-31');
+var date = GedcomXDate('R2/+1000-01-01/+2000-12-31');
 ````
 
 ### getType()
@@ -164,7 +165,7 @@ Returns the formal GedcomX representation as a `string`.
 ## Duration
 Represents a duration of time.
 ````javascript
-var date = GedcomXDate('A+1000-01-01/2000-12-31');
+var date = GedcomXDate('A+1000-01-01/P100Y');
 
 var duration = date.getDuration();
 ````
