@@ -2,11 +2,9 @@
 A GEDCOM-X Date Parser for Javascript, fully compliant with the [spec](https://github.com/FamilySearch/gedcomx/blob/master/specifications/date-format-specification.md) and patterned after javascript's `Date` object.
 
 # TODO
-* Add getNthInstance() to Recurring (calls multiplyDuration() and addDuration() )
-* add toFormalString()
+* Add toFormalString()
 * Finish informal duration parsing
-* finish comment blocks on every function
-* override getEnd on recurring to return Infinity or last nth instance
+* Finish comment blocks on every function
 
 # Download
 
@@ -119,6 +117,10 @@ Returns the `number` of times this date recurs, or javascript `Infinity`.  Also 
 
 ### getEnd()
 Returns the last instance of the recurring date or `undefined`.
+
+### getNth()
+Returns the Nth occurence of this Date
+
 
 ## Duration
 Represents a duration of time.
