@@ -34,7 +34,7 @@ var newDuration = GedcomXDate.getDuration(single, new GedcomXDate('+2014-03-01')
 console.log(newDuration.toFormalString());
 // P114Y2M
 
-halfDuration = GedcomXDate.multiplyDuration(newDuration, .5);
+var halfDuration = GedcomXDate.multiplyDuration(newDuration, .5);
 
 console.log(newDuration.toFormalString());
 // P57Y1M
