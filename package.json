@@ -1,10 +1,14 @@
 {
   "name": "gedcomx-date",
+  "description": "A GEDCOM-X Date Parser, fully compliant with the official specification",
+  "keywords": ["GEDCOM-X", "GEDCOMX", "GEDCOM", "date"],
+  "homepage": "https://github.com/trepo/gedcomx-date-js/",
   "version": "0.1.0",
   "repository": {
     "type": "git",
     "url": "git@github.com:trepo/gedcomx-date-js.git"
   },
+  "license": "MIT",
   "main": "lib/gedcomx-date.js",
   "scripts": {
     "build": "./node_modules/browserify/bin/cmd.js lib/gedcomx-date.js -s GedcomXDate -o GedcomXDate.js"

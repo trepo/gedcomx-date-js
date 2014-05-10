@@ -1,15 +1,14 @@
-# gedcomx-date-js
-A GEDCOM-X Date Parser for Javascript, fully compliant with the [spec](https://github.com/FamilySearch/gedcomx/blob/master/specifications/date-format-specification.md) and patterned after javascript's `Date` object.
+# GedcomX-Date
+A GEDCOM-X Date Parser for Javascript, fully compliant with the [spec](https://github.com/FamilySearch/gedcomx/blob/master/specifications/date-format-specification.md).
 
 # TODO
 * Add toFormalString()
-* Finish informal duration parsing
-* Finish comment blocks on every function
+* Implement Informal Date Parsing
 
 # Download
 
 ## Node.js
-You can install vGraph by cloning this repository or by using npm.
+You can install GedcomX-Date by cloning this repository or by using npm.
 ````bash
 npm install gedcomx-date
 ````
@@ -20,7 +19,7 @@ Download [GedcomXDate.js](GedcomXDate.js) and enjoy.
 
 # Tests
 
-There is a fairly comprehensive test suite.
+There is a very comprehensive test suite.
 ````bash
 # To run the tests cd to the repo directory and run
 mocha
@@ -116,7 +115,8 @@ Returns a `boolean` as to whether or not the date is approximate.
 Returns the `number` of times this date recurs, or javascript `Infinity`.  Also accessible via the attribute `count`.
 
 ### getEnd()
-Returns the last instance of the recurring date or `undefined`.
+(Overrides Range.getEnd)
+Returns the **last** instance of the recurring date or `undefined`.
 
 ### getNth()
 Returns the Nth occurence of this Date
@@ -163,7 +163,7 @@ There are a few convinience functions and attributes exposed through the main ob
 Will be a string set to the version of GedcomXDate. 
 
 ### GedcomXDate.getDuration(startDate, endDate)
-Returns the Duration between the startDate and endDate, or throws an error if startDate >= endDate
+Returns the Duration between the startDate and endDate, or throws an error if startDate >= endDate.
 
 ### GedcomXDate.daysInMonth(month, year)
 Returns the number of days in the month for the given year.

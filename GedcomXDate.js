@@ -2,9 +2,11 @@
 var util = _dereq_('util'),
     Simple = _dereq_('./simple.js');
 
+/**
+ * An approximate GedcomX Date.
+ * Inherits from Simple.
+ */
 function Approximate() {
-
-// TODO consider lopping the A off at a higher level.
 
   if(arguments.length > 0) {
 
@@ -32,8 +34,9 @@ Approximate.prototype.isApproximate = function() {
 
 module.exports = Approximate;
 },{"./simple.js":6,"util":12}],2:[function(_dereq_,module,exports){
-
-
+/**
+ * A gedcomX Duration
+ */
 function Duration(str) {
 
   // There must be at least a P
@@ -58,6 +61,9 @@ function Duration(str) {
 
 }
 
+/**
+ * Parse a normalized duration.
+ */
 Duration.prototype._parseNormalized = function(str) {
 
   var duration = str.split(''),
@@ -190,47 +196,76 @@ Duration.prototype._parseNormalized = function(str) {
 
 }
 
+/**
+ * Return the string recurring.
+ */
 Duration.prototype.getType = function() {
   return 'duration';
 }
 
+/**
+ * A duration is never approximate.
+ */
 Duration.prototype.isApproximate = function() {
   return false;
 }
 
+/**
+ * Return the years as a number or undefined.
+ */
 Duration.prototype.getYears = function() {
   return this._years;
 }
 
+/**
+ * Return the months as a number or undefined.
+ */
 Duration.prototype.getMonths = function() {
   return this._months;
 }
 
+/**
+ * Return the days as a number or undefined.
+ */
 Duration.prototype.getDays = function() {
   return this._days;
 }
 
+/**
+ * Return the hours as a number or undefined.
+ */
 Duration.prototype.getHours = function() {
   return this._hours;
 }
 
+/**
+ * Return the minutes as a number or undefined.
+ */
 Duration.prototype.getMinutes = function() {
   return this._minutes;
 }
 
+/**
+ * Return the seconds as a number or undefined.
+ */
 Duration.prototype.getSeconds = function() {
   return this._seconds;
 }
 
 module.exports = Duration;
 },{}],3:[function(_dereq_,module,exports){
-var Util = _dereq_('./util.js'),
+var GedUtil = _dereq_('./util.js'),
     Simple = _dereq_('./simple.js'),
     Duration = _dereq_('./duration.js'),
     Approximate = _dereq_('./approximate.js'),
     Recurring = _dereq_('./recurring.js'),
     Range = _dereq_('./range.js');
 
+/**
+ * A GedcomX Date.
+ * This will parse the passed in string and return
+ * the appropriate GedcomX Date object.
+ */
 function GedcomXDate(str) {
 
   if(str == '') {
@@ -256,23 +291,43 @@ function GedcomXDate(str) {
   }
 }
 
+/**
+ * The version of this library.
+ */
 GedcomXDate.version = '0.1.0';
 
-GedcomXDate.addDuration = Util.addDuration;
+/**
+ * Expose addDuration.
+ */
+GedcomXDate.addDuration = GedUtil.addDuration;
 
-GedcomXDate.multiplyDuration = Util.multiplyDuration;
+/**
+ * Expose multiplyDuration.
+ */
+GedcomXDate.multiplyDuration = GedUtil.multiplyDuration;
 
-GedcomXDate.getDuration = Util.getDuration;
+/**
+ * Expose getDuration.
+ */
+GedcomXDate.getDuration = GedUtil.getDuration;
 
-GedcomXDate.daysInMonth = Util.daysInMonth;
+/**
+ * Expose daysInMonth.
+ */
+GedcomXDate.daysInMonth = GedUtil.daysInMonth;
 
 module.exports = GedcomXDate;
 },{"./approximate.js":1,"./duration.js":2,"./range.js":4,"./recurring.js":5,"./simple.js":6,"./util.js":8}],4:[function(_dereq_,module,exports){
-var Util = _dereq_('./util.js'),
+var GedUtil = _dereq_('./util.js'),
     Simple = _dereq_('./simple.js'),
     Duration = _dereq_('./duration.js'),
     Approximate = _dereq_('./approximate.js');
 
+/**
+ * A GedcomX Range.
+ * It will place a Singel date at this.start and this.end,
+ * as well as a Duration at this.duration.
+ */
 function Range(startString, endString) {
 
   if(startString && startString.length > 0) {
@@ -299,7 +354,7 @@ function Range(startString, endString) {
         throw new Error(e.message+' in Range End Date');
       }
       if(this.start) {
-        this.duration = Util.getDuration(this.start, this.end);
+        this.duration = GedUtil.getDuration(this.start, this.end);
       }
     } else if(endString.charAt(0) == 'P') {
 
@@ -315,7 +370,7 @@ function Range(startString, endString) {
       }
 
       // Use duration and calculate end date
-      this.end = Util.addDuration(this.start, this.duration);
+      this.end = GedUtil.addDuration(this.start, this.duration);
     } else {
       try {
         this.end = new Simple(endString);
@@ -323,18 +378,23 @@ function Range(startString, endString) {
         throw new Error(e.message+' in Range End Date');
       }
       if(this.start) {
-        this.duration = Util.getDuration(this.start, this.end);
+        this.duration = GedUtil.getDuration(this.start, this.end);
       }
     }
   }
 
 }
 
-
+/**
+ * Return the string range.
+ */
 Range.prototype.getType = function() {
   return 'range';
 }
 
+/**
+ * Return true if either start or end is approximate.
+ */
 Range.prototype.isApproximate = function() {
   if(this.start && this.start.isApproximate()) {
     return true;
@@ -345,14 +405,23 @@ Range.prototype.isApproximate = function() {
   return false;
 }
 
+/**
+ * Return the start date or undefined.
+ */
 Range.prototype.getStart = function() {
   return this.start;
 }
 
+/**
+ * Return the end date or undefined.
+ */
 Range.prototype.getDuration = function() {
   return this.duration;
 }
 
+/**
+ * Return the duration or undefined.
+ */
 Range.prototype.getEnd = function() {
   return this.end;
 }
@@ -360,11 +429,18 @@ Range.prototype.getEnd = function() {
 module.exports = Range;
 },{"./approximate.js":1,"./duration.js":2,"./simple.js":6,"./util.js":8}],5:[function(_dereq_,module,exports){
 var util = _dereq_('util'),
+    GedUtil = _dereq_('./util.js'),
     Range = _dereq_('./range.js');
 
+/**
+ * A GedcomX Recurring Date.
+ */
 function Recurring(countNum, startString, endString) {
   
-  // TODO we must have start and end. error if both aren't set
+  // We must have start and end. error if both aren't set
+  if(!startString || !endString) {
+    throw new Error('Recurring must have a start and end');
+  }
 
   // Validate count is a number if set
   if(countNum) {
@@ -376,14 +452,26 @@ function Recurring(countNum, startString, endString) {
   }
 
   Range.call(this, startString, endString);
+
+  // If we have a count, replace end with the actual end date or undefined.
+  delete this.end;
+  if(this.count) {
+    this.end = this.getNth(this.count);
+  }
 }
 
 util.inherits(Recurring, Range);
 
+/**
+ * Return the string recurring.
+ */
 Recurring.prototype.getType = function() {
   return 'recurring';
 }
 
+/**
+ * Return the count or Infinity.
+ */
 Recurring.prototype.getCount = function() {
   if(this.count == undefined) {
     return Infinity;
@@ -392,9 +480,20 @@ Recurring.prototype.getCount = function() {
   }
 }
 
+/**
+ * Returns the nth instance of this recurring date.
+ */
+Recurring.prototype.getNth = function(multiplier) {
+  
+  var duration = GedUtil.multiplyDuration(this.duration, multiplier);
+
+  return GedUtil.addDuration(this.start, duration);
+  
+}
+
 module.exports = Recurring;
-},{"./range.js":4,"util":12}],6:[function(_dereq_,module,exports){
-var Util = _dereq_('./util-global.js');
+},{"./range.js":4,"./util.js":8,"util":12}],6:[function(_dereq_,module,exports){
+var GlobalUtil = _dereq_('./util-global.js');
 /**
  * The simplest representation of a date.
  */
@@ -419,7 +518,7 @@ function Simple() {
 
 /**
  * Parse a simple date.
- * This function also does strict validation
+ * This function also does strict validation.
  */
 Simple.prototype._parse = function(str) {
 
@@ -481,7 +580,7 @@ Simple.prototype._parse = function(str) {
 
   // Extract and validate day
   var day = str.substr(offset+1,2);
-  var daysInMonth = Util.daysInMonth(this._month, this._year);
+  var daysInMonth = GlobalUtil.daysInMonth(this._month, this._year);
 
   switch(daysInMonth) {
     case 31:
@@ -519,6 +618,9 @@ Simple.prototype._parse = function(str) {
 
 }
 
+/**
+ * Parse the time component.
+ */
 Simple.prototype._parseTime = function(str) {
   
   var offset = 0,
@@ -615,6 +717,9 @@ Simple.prototype._parseTime = function(str) {
 
 }
 
+/**
+ * Parse the timezone component.
+ */
 Simple.prototype._parseTimezone = function(str) {
   
   var offset = 0,
@@ -672,7 +777,7 @@ Simple.prototype._parseTimezone = function(str) {
 }
 
 /**
- * Return single.
+ * Return the string single.
  */
 Simple.prototype.getType = function() {
   return 'single';
@@ -747,6 +852,10 @@ module.exports = {
   daysInMonth: daysInMonth
 }
 
+/**
+ * Return the number of days in a month, 
+ * taking leapyear into account.
+ */
 function daysInMonth(month, year) {
   switch(month) {
     case 1:
@@ -783,18 +892,23 @@ function daysInMonth(month, year) {
   }
 }
 },{}],8:[function(_dereq_,module,exports){
-var Util = _dereq_('./util-global.js'),
+var GlobalUtil = _dereq_('./util-global.js'),
     Duration = _dereq_('./duration.js'),
     Simple = _dereq_('./simple.js'),
     Approximate = _dereq_('./approximate.js');
 
 module.exports = {
   getDuration: getDuration,
-  daysInMonth: Util.daysInMonth,
+  daysInMonth: GlobalUtil.daysInMonth,
   addDuration: addDuration,
   multiplyDuration: multiplyDuration
 }
 
+/**
+ * Takes in a start duration and a multiplier,
+ * and returns a new Duration.
+ * Rounds using Math.round
+ */
 function multiplyDuration(startDuration, multiplier) {
 
   if(!isFinite(multiplier) || multiplier <= 0) {
@@ -868,6 +982,9 @@ function multiplyDuration(startDuration, multiplier) {
 
 }
 
+/**
+ * Adds a duration to a date, returning the new date.
+ */
 function addDuration(startDate, duration) {
   var end = getObjFromDate(startDate, false),
       endString = '';
@@ -922,13 +1039,13 @@ function addDuration(startDate, duration) {
   if(duration.getDays()) {
     end.day += duration.getDays();
   }
-  while(end.day && end.day > Util.daysInMonth(end.month, end.year)) {
+  while(end.day && end.day > GlobalUtil.daysInMonth(end.month, end.year)) {
     end.month += 1;
     if(end.month > 12) {
       end.month -= 12;
       end.year += 1;
     }
-    end.day -= Util.daysInMonth(end.month, end.year);
+    end.day -= GlobalUtil.daysInMonth(end.month, end.year);
   }
   if(end.day != undefined) {
     endString = '-'+('00'+end.day).substr(-2,2)+endString;
@@ -974,6 +1091,9 @@ function addDuration(startDate, duration) {
 
 }
 
+/**
+ * Returns the duration between the starting and ending date.
+ */
 function getDuration(startDate, endDate) {
   
   var start = getObjFromDate(startDate, true),
@@ -1022,7 +1142,7 @@ function getDuration(startDate, endDate) {
 
   if(end.day != undefined) {
     while(end.day-start.day < 0) {
-      end.day += Util.daysInMonth(end.month,end.year);
+      end.day += GlobalUtil.daysInMonth(end.month,end.year);
       end.month -= 1;
       if(end.month < 1) {
         end.year -= 1;
@@ -1055,6 +1175,11 @@ function getDuration(startDate, endDate) {
   return new Duration('P'+duration);
 }
 
+/**
+ * Ensures that both start and end have values where the other has values.
+ * For example, if start has minutes but end does not, this function
+ * will initialize minutes in end.
+ */
 function zipDates(start, end) {
   if(start.month != undefined && end.month == undefined) {
     end.month = 1;
@@ -1092,6 +1217,11 @@ function zipDates(start, end) {
   }
 }
 
+/**
+ * Ensures that date has its proeprties initialized based on what the duration has.
+ * For example, if date does not have minutes and duration does, this will
+ * initialize minutes in the date.
+ */
 function zipDuration(date, duration) {
   var toSet = {};
 
@@ -1151,6 +1281,9 @@ function zipDuration(date, duration) {
 
 }
 
+/**
+ * Returns an object representing a date, optionally normalizing to UTC time.
+ */
 function getObjFromDate(date, adjustTimezone) {
   var obj = {
     year: date.getYear(),
