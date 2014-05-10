@@ -33,6 +33,16 @@ describe('GedcomXDate', function(){
     });
   });
 
+  describe("#addDuration()", function(){
+    it('should respond to addDuration', function(){
+
+      var end = GedcomXDate.addDuration(new Simple('+1000'), new Duration('P1Y'));
+
+      expect(end.getYear()).to.equal(1001);
+
+    });
+  });
+
   describe("#daysInMonth()", function(){
     it('should respond to daysInMonth', function(){
 

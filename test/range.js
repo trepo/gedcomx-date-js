@@ -117,9 +117,9 @@ describe('Range', function(){
       }).to.throw(Error);
     });
 
-    it('should error on +1000-01-01T24:00:00Z P1Y', function(){
+    it('should error on +1000-01-01T24:00:00Z PY', function(){
       expect(function() {
-        var range = new Range('+1000-01-01T24:00:00Z', 'P1Y');
+        var range = new Range('+1000-01-01T24:00:00Z', 'PY');
       }).to.throw(Error);
     });
 

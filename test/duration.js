@@ -37,7 +37,7 @@ describe('Duration', function(){
 
     it('should error on invalid year', function(){
       expect(function() {
-        var duration = new Duration('P001Y');
+        var duration = new Duration('PY');
       }).to.throw(Error, 'Invalid Duration: invalid years');
     });
 
@@ -55,7 +55,7 @@ describe('Duration', function(){
 
     it('should error on invalid month', function(){
       expect(function() {
-        var duration = new Duration('P1000Y1M');
+        var duration = new Duration('P1000YM');
       }).to.throw(Error, 'Invalid Duration: invalid months');
     });
 
@@ -73,7 +73,7 @@ describe('Duration', function(){
 
     it('should error on invalid day', function(){
       expect(function() {
-        var duration = new Duration('P1000Y01M1D');
+        var duration = new Duration('P1000Y01MD');
       }).to.throw(Error, 'Invalid Duration: invalid days');
     });
 
@@ -103,7 +103,7 @@ describe('Duration', function(){
 
     it('should error on invalid hour', function(){
       expect(function() {
-        var duration = new Duration('P1000Y01M01DT1H');
+        var duration = new Duration('P1000Y01M01DTH');
       }).to.throw(Error, 'Invalid Duration: invalid hours');
     });
 
@@ -121,7 +121,7 @@ describe('Duration', function(){
 
     it('should error on invalid minute', function(){
       expect(function() {
-        var duration = new Duration('P1000Y01M01DT01H1M');
+        var duration = new Duration('P1000Y01M01DT01HM');
       }).to.throw(Error, 'Invalid Duration: invalid minutes');
     });
 
@@ -145,7 +145,7 @@ describe('Duration', function(){
 
     it('should error on invalid second', function(){
       expect(function() {
-        var duration = new Duration('P1000Y01M01DT01H01M1S');
+        var duration = new Duration('P1000Y01M01DT01H01MS');
       }).to.throw(Error, 'Invalid Duration: invalid seconds');
     });
 
