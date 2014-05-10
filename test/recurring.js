@@ -70,9 +70,9 @@ describe('Recurring', function(){
     });
 
     it('should return infinity', function(){
-      var recurring = new Recurring(null, '+1000', 'P1Y');
+      var recurring = new Recurring(null, '+1000', '+1010');
           date = recurring.getEnd();
-      expect(date).to.equal(Infinity);
+      expect(date).to.equal(undefined);
     });
 
   });
