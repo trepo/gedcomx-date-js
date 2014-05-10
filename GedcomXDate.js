@@ -31,7 +31,7 @@ Approximate.prototype.isApproximate = function() {
 }
 
 module.exports = Approximate;
-},{"./simple.js":6,"util":11}],2:[function(_dereq_,module,exports){
+},{"./simple.js":6,"util":12}],2:[function(_dereq_,module,exports){
 
 
 function Duration(str) {
@@ -76,7 +76,7 @@ Duration.prototype._parseNormalized = function(str) {
 
     switch(character) {
       case 'Y':
-        if(currentNum.length != 4) {
+        if(currentNum.length < 1) {
           throw new Error('Invalid Duration: invalid years');
         }
         if(seen.indexOf('Y') != -1) {
@@ -92,7 +92,7 @@ Duration.prototype._parseNormalized = function(str) {
         break;
       case 'M':
         if(inTime) {
-          if(currentNum.length != 2) {
+          if(currentNum.length < 1) {
             throw new Error('Invalid Duration: invalid minutes');
           }
           if(seen.indexOf('Mi') != -1) {
@@ -106,7 +106,7 @@ Duration.prototype._parseNormalized = function(str) {
           valid = valid.slice(valid.indexOf('Mi')+1);
           currentNum = '';
         } else {
-          if(currentNum.length != 2) {
+          if(currentNum.length < 1) {
             throw new Error('Invalid Duration: invalid months');
           }
           if(seen.indexOf('Mo') != -1) {
@@ -122,7 +122,7 @@ Duration.prototype._parseNormalized = function(str) {
         }
         break;
       case 'D':
-        if(currentNum.length != 2) {
+        if(currentNum.length < 1) {
           throw new Error('Invalid Duration: invalid days');
         }
         if(seen.indexOf('D') != -1) {
@@ -140,7 +140,7 @@ Duration.prototype._parseNormalized = function(str) {
         if(!inTime) {
           throw new Error('Invalid Duration: Missing T before hours');
         }
-        if(currentNum.length != 2) {
+        if(currentNum.length < 1) {
           throw new Error('Invalid Duration: invalid hours');
         }
         if(seen.indexOf('H') != -1) {
@@ -158,7 +158,7 @@ Duration.prototype._parseNormalized = function(str) {
         if(!inTime) {
           throw new Error('Invalid Duration: Missing T before seconds');
         }
-        if(currentNum.length != 2) {
+        if(currentNum.length < 1) {
           throw new Error('Invalid Duration: invalid seconds');
         }
         if(seen.indexOf('S') != -1) {
@@ -256,12 +256,18 @@ function GedcomXDate(str) {
   }
 }
 
-GedcomXDate.prototype.getDuration = Util.getDuration;
+GedcomXDate.version = '0.1.0';
 
-GedcomXDate.prototype.daysInMonth = Util.daysInMonth;
+GedcomXDate.addDuration = Util.addDuration;
+
+GedcomXDate.multiplyDuration = Util.multiplyDuration;
+
+GedcomXDate.getDuration = Util.getDuration;
+
+GedcomXDate.daysInMonth = Util.daysInMonth;
 
 module.exports = GedcomXDate;
-},{"./approximate.js":1,"./duration.js":2,"./range.js":4,"./recurring.js":5,"./simple.js":6,"./util.js":7}],4:[function(_dereq_,module,exports){
+},{"./approximate.js":1,"./duration.js":2,"./range.js":4,"./recurring.js":5,"./simple.js":6,"./util.js":8}],4:[function(_dereq_,module,exports){
 var Util = _dereq_('./util.js'),
     Simple = _dereq_('./simple.js'),
     Duration = _dereq_('./duration.js'),
@@ -309,7 +315,7 @@ function Range(startString, endString) {
       }
 
       // Use duration and calculate end date
-      this.end = this._getDateFromDuration(this.start, this.duration);
+      this.end = Util.addDuration(this.start, this.duration);
     } else {
       try {
         this.end = new Simple(endString);
@@ -324,16 +330,6 @@ function Range(startString, endString) {
 
 }
 
-
-
-Range.prototype._getDateFromDuration = function(startDate, durationPeriod) {
-  // TODO finish this amd move to Utils
-  if(startDate.isApproximate()) {
-    return new Approximate('A+2000');
-  } else {
-    return new Simple('+1000');
-  }
-}
 
 Range.prototype.getType = function() {
   return 'range';
@@ -362,7 +358,7 @@ Range.prototype.getEnd = function() {
 }
 
 module.exports = Range;
-},{"./approximate.js":1,"./duration.js":2,"./simple.js":6,"./util.js":7}],5:[function(_dereq_,module,exports){
+},{"./approximate.js":1,"./duration.js":2,"./simple.js":6,"./util.js":8}],5:[function(_dereq_,module,exports){
 var util = _dereq_('util'),
     Range = _dereq_('./range.js');
 
@@ -397,8 +393,8 @@ Recurring.prototype.getCount = function() {
 }
 
 module.exports = Recurring;
-},{"./range.js":4,"util":11}],6:[function(_dereq_,module,exports){
-var Util = _dereq_('./util.js');
+},{"./range.js":4,"util":12}],6:[function(_dereq_,module,exports){
+var Util = _dereq_('./util-global.js');
 /**
  * The simplest representation of a date.
  */
@@ -490,22 +486,22 @@ Simple.prototype._parse = function(str) {
   switch(daysInMonth) {
     case 31:
       if(day.match(/^(0[1-9]|[1-2][0-9]|3[0-1])$/) === null) {
-        throw new Error('Invalid Date: Malformed day (31 in '+this._month+')');
+        throw new Error('Invalid Date: Malformed day (31 in month '+this._month+')');
       }
       break;
     case 30:
       if(day.match(/^(0[1-9]|[1-2][0-9]|30)$/) === null) {
-        throw new Error('Invalid Date: Malformed day (30 in '+this._month+')');
+        throw new Error('Invalid Date: Malformed day (30 in month '+this._month+')');
       }
       break;
     case 29:
       if(day.match(/^(0[1-9]|1[0-9]|2[0-9])$/) === null) {
-        throw new Error('Invalid Date: Malformed day (29 in '+this._month+' - leapyear)');
+        throw new Error('Invalid Date: Malformed day (29 in month '+this._month+' - leapyear)');
       }
       break;
     case 28:
       if(day.match(/^(0[1-9]|1[0-9]|2[0-8])$/) === null) {
-        throw new Error('Invalid Date: Malformed day (28 in '+this._month+')');
+        throw new Error('Invalid Date: Malformed day (28 in month '+this._month+')');
       }
       break;
   }
@@ -528,6 +524,14 @@ Simple.prototype._parseTime = function(str) {
   var offset = 0,
       end = str.length,
       flag24 = false;
+
+  // Always initialize the Timezone to the local offset.
+  // It may be overridden if set
+  var tempDate = new Date(),
+      tempOffset = tempDate.getTimezoneOffset();
+  
+  this._tzHours = tempOffset/60;
+  this._tzMinutes = tempOffset%60;
 
   // There is a minimum length of 2 characters
   if(str.length < 2) throw new Error('Invalid Date: Malformed hours');
@@ -566,7 +570,7 @@ Simple.prototype._parseTime = function(str) {
     throw new Error('Invalid Date: Malformed minutes');
   }
   if(flag24 && minutes != '00') {
-    throw new Error('Invalid Date: Hour od 24 requires 00 minutes');
+    throw new Error('Invalid Date: Hour of 24 requires 00 minutes');
   }
   this._minutes = parseInt(minutes);
   offset += 3;
@@ -593,7 +597,7 @@ Simple.prototype._parseTime = function(str) {
     throw new Error('Invalid Date: Malformed seconds');
   }
   if(flag24 && seconds != '00') {
-    throw new Error('Invalid Date: Hour od 24 requires 00 seconds');
+    throw new Error('Invalid Date: Hour of 24 requires 00 seconds');
   }
   this._seconds = parseInt(seconds);
   offset += 3;
@@ -636,6 +640,8 @@ Simple.prototype._parseTimezone = function(str) {
     throw new Error('Invalid Date: Malformed timezone hours');
   }
   this._tzHours = parseInt(tzHours);
+  // set tz minutes to clear out default local tz offset
+  this._tzMinutes = 0;
   offset += 3;
 
   if(offset == end) {
@@ -736,19 +742,243 @@ Simple.prototype.getTZMinutes = function() {
 }
 
 module.exports = Simple;
-},{"./util.js":7}],7:[function(_dereq_,module,exports){
-var Duration = _dereq_('./duration.js');
+},{"./util-global.js":7}],7:[function(_dereq_,module,exports){
+module.exports = {
+  daysInMonth: daysInMonth
+}
+
+function daysInMonth(month, year) {
+  switch(month) {
+    case 1:
+    case 3:
+    case 5:
+    case 6:
+    case 8:
+    case 10:
+    case 12:
+      return 31;
+    case 4:
+    case 7:
+    case 9:
+    case 11:
+      return 30;
+    case 2:
+      var leapyear;
+      if(year % 4 != 0) {
+        leapyear = false;
+      } else if(year % 100 != 0) {
+        leapyear = true;
+      } else if(year % 400 != 0) {
+        leapyear = false;
+      } else {
+        leapyear = true;
+      }
+      if(leapyear) {
+        return 29;
+      } else {
+        return 28;
+      }
+    default:
+      throw new Error('Unknown Month');
+  }
+}
+},{}],8:[function(_dereq_,module,exports){
+var Util = _dereq_('./util-global.js'),
+    Duration = _dereq_('./duration.js'),
+    Simple = _dereq_('./simple.js'),
+    Approximate = _dereq_('./approximate.js');
 
 module.exports = {
   getDuration: getDuration,
-  daysInMonth: daysInMonth
+  daysInMonth: Util.daysInMonth,
+  addDuration: addDuration,
+  multiplyDuration: multiplyDuration
+}
+
+function multiplyDuration(startDuration, multiplier) {
+
+  if(!isFinite(multiplier) || multiplier <= 0) {
+    throw new Error('Invalid Multiplier');
+  }
+
+  var newDuration = {},
+      hasTime = false,
+      duration = '';
+
+  if(startDuration.getSeconds()) {
+    newDuration.seconds = Math.round(startDuration.getSeconds()*multiplier);
+  }
+
+  if(startDuration.getMinutes()) {
+    newDuration.minutes = Math.round(startDuration.getMinutes()*multiplier);
+  }
+
+  if(startDuration.getHours()) {
+    newDuration.hours = Math.round(startDuration.getHours()*multiplier);
+  }
+
+  if(startDuration.getDays()) {
+    newDuration.days = Math.round(startDuration.getDays()*multiplier);
+  }
+
+  if(startDuration.getMonths()) {
+    newDuration.months = Math.round(startDuration.getMonths()*multiplier);
+  }
+
+  if(startDuration.getYears()) {
+    newDuration.years = Math.round(startDuration.getYears()*multiplier);
+  }
+
+  if(newDuration.seconds) {
+    hasTime = true;
+    duration = newDuration.seconds+'S'+duration;
+  }
+
+  if(newDuration.minutes) {
+    hasTime = true;
+    duration = newDuration.minutes+'M'+duration;
+  }
+
+  if(newDuration.hours) {
+    hasTime = true;
+    duration = newDuration.hours+'H'+duration;
+  }
+
+  if(hasTime) {
+    duration = 'T'+duration;
+  }
+
+  if(newDuration.days) {
+    duration = newDuration.days+'D'+duration;
+  }
+
+  if(newDuration.months) {
+    duration = newDuration.months+'M'+duration;
+  }
+
+  if(newDuration.years) {
+    duration = newDuration.years+'Y'+duration;
+  }
+
+  if(!duration) {
+    throw new Error('Invalid Duration Multiplier');
+  }
+
+  return new Duration('P'+duration);
+
+}
+
+function addDuration(startDate, duration) {
+  var end = getObjFromDate(startDate, false),
+      endString = '';
+
+  // Initialize all the values we need in end based on the duration
+  zipDuration(end, duration);
+
+  // Add Timezone offset to endString
+  if(startDate.getTZHours() != undefined) {
+    if(startDate.getTZHours() < 0) {
+      endString += '-';
+    } else {
+      endString += '+';
+    }
+    endString += ('00'+Math.abs(startDate.getTZHours())).substr(-2,2);
+    endString += ':'+('00'+Math.abs(startDate.getTZMinutes())).substr(-2,2);
+  }
+
+  if(duration.getSeconds()) {
+    end.seconds += duration.getSeconds();
+  }
+  while(end.seconds && end.seconds >= 60) {
+    end.seconds -= 60;
+    end.minutes += 1;
+  }
+  if(end.seconds != undefined) {
+    endString = ':'+('00'+end.seconds).substr(-2,2)+endString;
+  }
+
+  if(duration.getMinutes()) {
+    end.minutes += duration.getMinutes();
+  }
+  while(end.minutes && end.minutes >= 60) {
+    end.minutes -= 60;
+    end.hours += 1;
+  }
+  if(end.minutes != undefined) {
+    endString = ':'+('00'+end.minutes).substr(-2,2)+endString;
+  }
+
+  if(duration.getHours()) {
+    end.hours += duration.getHours();
+  }
+  while(end.hours && end.hours >= 24) {
+    end.hours -= 24;
+    end.day += 1;
+  }
+  if(end.hours != undefined) {
+    endString = 'T'+('00'+end.hours).substr(-2,2)+endString;
+  }
+
+  if(duration.getDays()) {
+    end.day += duration.getDays();
+  }
+  while(end.day && end.day > Util.daysInMonth(end.month, end.year)) {
+    end.month += 1;
+    if(end.month > 12) {
+      end.month -= 12;
+      end.year += 1;
+    }
+    end.day -= Util.daysInMonth(end.month, end.year);
+  }
+  if(end.day != undefined) {
+    endString = '-'+('00'+end.day).substr(-2,2)+endString;
+  }
+
+  if(duration.getMonths()) {
+    end.month += duration.getMonths();
+  }
+  while(end.month && end.month > 12) {
+    end.month -= 12;
+    end.year += 1;
+  }
+  if(end.month != undefined) {
+    endString = '-'+('00'+end.month).substr(-2,2)+endString;
+  }
+
+  if(duration.getYears()) {
+    end.year += duration.getYears();
+  }
+  if(end.year != undefined) {
+    endString = ('0000'+Math.abs(end.year)).substr(-4,4)+endString;
+    if(end.year < 0) {
+      endString = '-'+endString;
+    } else {
+      endString = '+'+endString;
+    }
+  }
+
+  // After adding year we could have bumped into a non leap year
+  // TODO fix this
+
+  if(end.year > 9999) {
+    throw new Error('New date out of range');
+  }
+
+  // TODO return actual simple or approximate dates
+  if(startDate.isApproximate()) {
+    endString = 'A'+endString;
+    return new Approximate(endString);
+  } else {
+    return new Simple(endString);
+  }
+
 }
 
 function getDuration(startDate, endDate) {
   
-  var start = getObjFromDate(startDate),
-      end = getObjFromDate(endDate),
-      hasTime = false;
+  var start = getObjFromDate(startDate, true),
+      end = getObjFromDate(endDate, true),
+      hasTime = false,
       duration = '';
 
   zipDates(start, end);
@@ -792,7 +1022,7 @@ function getDuration(startDate, endDate) {
 
   if(end.day != undefined) {
     while(end.day-start.day < 0) {
-      end.day += daysInMonth(end.month,end.year);
+      end.day += Util.daysInMonth(end.month,end.year);
       end.month -= 1;
       if(end.month < 1) {
         end.year -= 1;
@@ -823,42 +1053,6 @@ function getDuration(startDate, endDate) {
   }
 
   return new Duration('P'+duration);
-}
-
-function daysInMonth(month, year) {
-  switch(month) {
-    case 1:
-    case 3:
-    case 5:
-    case 6:
-    case 8:
-    case 10:
-    case 12:
-      return 31;
-    case 4:
-    case 7:
-    case 9:
-    case 11:
-      return 30;
-    case 2:
-      var leapyear;
-      if(year % 4 != 0) {
-        leapyear = false;
-      } else if(year % 100 != 0) {
-        leapyear = true;
-      } else if(year % 400 != 0) {
-        leapyear = false;
-      } else {
-        leapyear = true;
-      }
-      if(leapyear) {
-        return 29;
-      } else {
-        return 28;
-      }
-    default:
-      throw new Error('Unknown Month');
-  }
 }
 
 function zipDates(start, end) {
@@ -898,7 +1092,66 @@ function zipDates(start, end) {
   }
 }
 
-function getObjFromDate(date) {
+function zipDuration(date, duration) {
+  var toSet = {};
+
+  if(duration.getSeconds()) {
+    toSet = {
+      seconds: true,
+      minutes: true,
+      hours: true,
+      days: true,
+      months: true
+    };
+  } else if(duration.getMinutes()) {
+    toSet = {
+      minutes: true,
+      hours: true,
+      days: true,
+      months: true
+    };
+  } else if(duration.getHours()) {
+    toSet = {
+      hours: true,
+      days: true,
+      months: true
+    };
+  } else if(duration.getDays()) {
+    toSet = {
+      days: true,
+      months: true
+    };
+  } else if(duration.getMonths()) {
+    toSet = {
+      months: true
+    };
+  } else {
+    return;
+  }
+
+  if(toSet.seconds && date.seconds == undefined) {
+    date.seconds = 0;
+  }
+
+  if(toSet.minutes && date.minutes == undefined) {
+    date.minutes = 0;
+  }
+
+  if(toSet.hours && date.hours == undefined) {
+    date.hours = 0;
+  }
+
+  if(toSet.days && date.day == undefined) {
+    date.day = 1;
+  }
+
+  if(toSet.months && date.month == undefined) {
+    date.month = 1;
+  }
+
+}
+
+function getObjFromDate(date, adjustTimezone) {
   var obj = {
     year: date.getYear(),
     month: date.getMonth(),
@@ -908,16 +1161,18 @@ function getObjFromDate(date) {
     seconds: date.getSeconds()
   }
 
-  if(obj.minutes != undefined && date.getTZMinutes() != undefined) {
-    obj.minutes += date.getTZMinutes();
-  }
+  if(adjustTimezone) {
+    if(obj.minutes != undefined && date.getTZMinutes() != undefined) {
+      obj.minutes += date.getTZMinutes();
+    }
 
-  if(obj.hours != undefined && date.getTZHours() != undefined) {
-    obj.hours += date.getTZHours();
+    if(obj.hours != undefined && date.getTZHours() != undefined) {
+      obj.hours += date.getTZHours();
+    }
   }
   return obj;
 }
-},{"./duration.js":2}],8:[function(_dereq_,module,exports){
+},{"./approximate.js":1,"./duration.js":2,"./simple.js":6,"./util-global.js":7}],9:[function(_dereq_,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -942,7 +1197,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],9:[function(_dereq_,module,exports){
+},{}],10:[function(_dereq_,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -1004,14 +1259,14 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],10:[function(_dereq_,module,exports){
+},{}],11:[function(_dereq_,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],11:[function(_dereq_,module,exports){
+},{}],12:[function(_dereq_,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -1601,6 +1856,6 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this,_dereq_("/Users/johnclark/repos/trepo/gedcomx-date-js/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":10,"/Users/johnclark/repos/trepo/gedcomx-date-js/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":9,"inherits":8}]},{},[3])
+},{"./support/isBuffer":11,"/Users/johnclark/repos/trepo/gedcomx-date-js/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":10,"inherits":9}]},{},[3])
 (3)
 });
