@@ -2,14 +2,11 @@
 A GEDCOM-X Date Parser for Javascript, fully compliant with the [spec](https://github.com/FamilySearch/gedcomx/blob/master/specifications/date-format-specification.md) and patterned after javascript's `Date` object.
 
 # TODO
-* Add util function multiplyDuration(duration, float) -> return duration
 * Add getNthInstance() to Recurring (calls multiplyDuration() and addDuration() )
 * add toFormalString()
-* Fix single/simple tests to also check for error string (like range)
 * Finish informal duration parsing
 * finish comment blocks on every function
 * override getEnd on recurring to return Infinity or last nth instance
-* Finish testing coverage
 
 # Download
 

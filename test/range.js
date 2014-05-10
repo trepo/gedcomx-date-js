@@ -96,31 +96,31 @@ describe('Range', function(){
     it('should error on A+2000-01-01T24:00:00ZB null', function(){
       expect(function() {
         var range = new Range('A+2000-01-01T24:00:00ZB', null);
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: malformed timezone in Approximate Date in Range Start Date');
     });
 
     it('should error on null A+2000-01-01T24:00:00ZB', function(){
       expect(function() {
         var range = new Range(null, 'A+2000-01-01T24:00:00ZB');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: malformed timezone in Approximate Date in Range End Date');
     });
 
     it('should error on +2000-01-01T24:00:00ZB null', function(){
       expect(function() {
         var range = new Range('+2000-01-01T24:00:00ZB', null);
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: malformed timezone in Range Start Date');
     });
 
     it('should error on null +2000-01-01T24:00:00ZB', function(){
       expect(function() {
         var range = new Range(null, '+2000-01-01T24:00:00ZB');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: malformed timezone in Range End Date');
     });
 
     it('should error on +1000-01-01T24:00:00Z PY', function(){
       expect(function() {
         var range = new Range('+1000-01-01T24:00:00Z', 'PY');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Duration: invalid years in Range End Date');
     });
 
     it('should calculate range correctly', function(){
@@ -149,7 +149,7 @@ describe('Range', function(){
     it('should error on null P1Y', function(){
       expect(function() {
         var range = new Range(null, 'P1Y');
-      }).to.throw(Error);
+      }).to.throw(Error, 'A Range may not end with a duration if missing a start date');
     });
 
   });

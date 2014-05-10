@@ -24,7 +24,7 @@ describe('Util-Global', function(){
 
       expect(function() {
         Util.daysInMonth(13, 2000);
-      }).to.throw('Unknown Month');
+      }).to.throw(Error, 'Unknown Month');
     });
   });
 

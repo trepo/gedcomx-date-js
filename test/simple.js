@@ -20,7 +20,7 @@ describe('Simple', function(){
 
       expect(function() {
         var simple = new Simple('');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date');
 
     });
 
@@ -42,19 +42,19 @@ describe('Simple', function(){
     it('should error on 01000', function(){
       expect(function() {
         var simple = new Simple('01000');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: Malformed year');
     });
 
     it('should error on +1000_01', function(){
       expect(function() {
         var simple = new Simple('+1000_01');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: Malformed year-month separator');
     });
 
     it('should error on +1000-1', function(){
       expect(function() {
         var simple = new Simple('+1000-1');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: Malformed month');
     });
 
     it('should parse +1000-01', function(){
@@ -72,25 +72,25 @@ describe('Simple', function(){
     it('should error on +1000-00', function(){
       expect(function() {
         var simple = new Simple('+1000-00');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: Malformed month');
     });
 
     it('should error on +1000-13', function(){
       expect(function() {
         var simple = new Simple('+1000-13');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: Malformed month');
     });
 
     it('should error on +1000-01_01', function(){
       expect(function() {
         var simple = new Simple('+1000-01_01');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: Malformed month-day separator');
     });
 
     it('should error on +1000-01-1', function(){
       expect(function() {
         var simple = new Simple('+1000-01-1');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: Malformed day');
     });
 
     it('should parse +1000-01-02', function(){
@@ -103,13 +103,13 @@ describe('Simple', function(){
     it('should error on +1000-01-00', function(){
       expect(function() {
         var simple = new Simple('+1000-01-00');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: Malformed day (31 in month 1)');
     });
 
     it('should error on +1000-01-32', function(){
       expect(function() {
         var simple = new Simple('+1000-01-32');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: Malformed day (31 in month 1)');
     });
 
     it('should parse +2008-02-29', function(){
@@ -122,19 +122,19 @@ describe('Simple', function(){
     it('should error on +2008-02-30', function(){
       expect(function() {
         var simple = new Simple('+2008-02-30');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: Malformed day (29 in month 2 - leapyear)');
     });
 
     it('should error on +2007-02-29', function(){
       expect(function() {
         var simple = new Simple('+2007-02-29');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: Malformed day (28 in month 2)');
     });
 
     it('should error on +2100-02-29', function(){
       expect(function() {
         var simple = new Simple('+2100-02-29');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: Malformed day (28 in month 2)');
     });
 
     it('should parse +1600-02-29', function(){
@@ -154,13 +154,13 @@ describe('Simple', function(){
     it('should error on +2007-04-31', function(){
       expect(function() {
         var simple = new Simple('+2007-04-31');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: Malformed day (30 in month 4)');
     });
 
     it('should error on +2007-01-01B', function(){
       expect(function() {
         var simple = new Simple('+2007-01-01B');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date');
     });
 
     it('should parse +2000-01-01T12', function(){
@@ -174,19 +174,19 @@ describe('Simple', function(){
     it('should error on +2000-01-01T25', function(){
       expect(function() {
         var simple = new Simple('+2000-01-01T25');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: Malformed hours');
     });
 
     it('should error on +2000-01-01T12_30', function(){
       expect(function() {
         var simple = new Simple('+2000-01-01T12_30');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: Malformed hour-minute separator');
     });
 
     it('should error on +2000-01-01T12:3', function(){
       expect(function() {
         var simple = new Simple('+2000-01-01T12:3');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: Malformed minutes');
     });
 
     it('should parse +2000-01-01T12:30', function(){
@@ -201,19 +201,19 @@ describe('Simple', function(){
     it('should error on +2000-01-01T12:60', function(){
       expect(function() {
         var simple = new Simple('+2000-01-01T12:60');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: Malformed minutes');
     });
 
     it('should error on +2000-01-01T12:30_15', function(){
       expect(function() {
         var simple = new Simple('+2000-01-01T12:30_15');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: Malformed minute-second separator');
     });
 
     it('should error on +2000-01-01T12:30:1', function(){
       expect(function() {
         var simple = new Simple('+2000-01-01T12:30:1');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: Malformed seconds');
     });
 
     it('should parse +2000-01-01T12:30:15', function(){
@@ -229,7 +229,7 @@ describe('Simple', function(){
     it('should error on +2000-01-01T12:30:60', function(){
       expect(function() {
         var simple = new Simple('+2000-01-01T12:30:60');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: Malformed seconds');
     });
 
     it('should parse +2000-01-01T24:00:00', function(){
@@ -245,19 +245,19 @@ describe('Simple', function(){
     it('should error on +2000-01-01T24:10:00', function(){
       expect(function() {
         var simple = new Simple('+2000-01-01T24:10:00');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: Hour of 24 requires 00 minutes');
     });
 
     it('should error on +2000-01-01T24:00:10', function(){
       expect(function() {
         var simple = new Simple('+2000-01-01T24:00:10');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: Hour of 24 requires 00 seconds');
     });
 
     it('should error on +2000-01-01T12:30:15B', function(){
       expect(function() {
         var simple = new Simple('+2000-01-01T12:30:15B');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: Malformed Time');
     });
 
     it('should parse +2000T12', function(){
@@ -346,31 +346,31 @@ describe('Simple', function(){
     it('should error on +2000-01-01T24:00:00Z1', function(){
       expect(function() {
         var simple = new Simple('+2000-01-01T24:00:00Z1');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: malformed timezone');
     });
 
     it('should error on +2000-01-01T24:00:00+1', function(){
       expect(function() {
         var simple = new Simple('+2000-01-01T24:00:00+1');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: Malformed timezone');
     });
 
     it('should error on +2000-01-01T24:00:00+24', function(){
       expect(function() {
         var simple = new Simple('+2000-01-01T24:00:00+24');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: Malformed timezone hours');
     });
 
     it('should error on +2000-01-01T24:00:00+12-30', function(){
       expect(function() {
         var simple = new Simple('+2000-01-01T24:00:00+12-30');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: Malformed timezone hour-minute separator');
     });
 
     it('should error on +2000-01-01T24:00:00+12:3', function(){
       expect(function() {
         var simple = new Simple('+2000-01-01T24:00:00+12:3');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: Malformed timezone minutes');
     });
 
     it('should parse +2000-01-01T24:00:00+12:30', function(){
@@ -388,13 +388,13 @@ describe('Simple', function(){
     it('should error on +2000-01-01T24:00:00+12:60', function(){
       expect(function() {
         var simple = new Simple('+2000-01-01T24:00:00+12:60');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: Malformed timezone minutes');
     });
 
     it('should error on +2000-01-01T24:00:00+12:30B', function(){
       expect(function() {
         var simple = new Simple('+2000-01-01T24:00:00+12:30B');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Invalid Date: Malformed timezone');
     });
 
   });
