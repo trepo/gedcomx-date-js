@@ -1,10 +1,44 @@
 # GedcomX-Date
-A GEDCOM-X Date Parser for Javascript, fully compliant with the [spec](https://github.com/FamilySearch/gedcomx/blob/master/specifications/date-format-specification.md).
+A GEDCOM-X Date Library for Javascript, fully compliant with the [spec](https://github.com/FamilySearch/gedcomx/blob/master/specifications/date-format-specification.md).
 
-# TODO
-* Implement Informal Date Parsing
+# Usage
+````javascript
+var GedcomXDate = require('gedcomx-date');
 
-# Download
+var single = new GedcomXDate('+1900-01-01');
+
+console.log(single.getYear());
+// 1900
+
+console.log(single.getHours());
+// undefined
+
+var range = new GedcomXDate('A-0100-01-01/P2Y');
+
+var duration = range.getDuration();
+
+var newSingle = GedcomX.addDuration(single, duration);
+
+console.log(newSingle.toFormalString());
+// +1902-01-01
+
+var recurring = new GedcomXDate('R10/+1950-01-01/P10Y');
+
+var futureDate = recurring.getNth(5);
+
+console.log(futureDate.toformalString());
+// +2000-01-01
+
+var newDuration = GedcomXDate.getDuration(single, new GedcomXDate('+2014-03-01'));
+
+console.log(newDuration.toFormalString());
+// P114Y2M
+
+halfDuration = GedcomXDate.multiplyDuration(newDuration, .5);
+
+console.log(newDuration.toFormalString());
+// P57Y1M
+````
 
 ## Node.js
 You can install GedcomX-Date by cloning this repository or by using npm.
@@ -164,7 +198,7 @@ Returns the formal GedcomX representation as a `string`.
 
 
 ## Utils
-There are a few convenience functions and attributes exposed through the main object
+There is an attribute and a few convenience functions exposed through GedcomXDate.
 
 ### GedcomXDate.version
 Will be a string set to the version of GedcomXDate. 
