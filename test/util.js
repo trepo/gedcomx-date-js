@@ -236,6 +236,141 @@ describe('Util', function(){
 
     });
 
+  });
+
+  
+  describe("#getDuration(start, end)", function(){
+    
+    it('should overflow seconds', function(){
+
+      var start = new Simple('+0999-12-31T23:59:59'),
+          end = new Simple('+1000-01-01T00:00:00'),
+          duration = GedcomXDate.getDuration(start, end);
+
+      expect(duration.getYears()).to.equal(undefined);
+      expect(duration.getMonths()).to.equal(undefined);
+      expect(duration.getDays()).to.equal(undefined);
+      expect(duration.getHours()).to.equal(undefined);
+      expect(duration.getMinutes()).to.equal(undefined);
+      expect(duration.getSeconds()).to.equal(1);
+
+    });
+
+    it('should overflow minutes', function(){
+
+      var start = new Simple('+0999-12-31T23:59:00'),
+          end = new Simple('+1000-01-01T00:00:00'),
+          duration = GedcomXDate.getDuration(start, end);
+
+      expect(duration.getYears()).to.equal(undefined);
+      expect(duration.getMonths()).to.equal(undefined);
+      expect(duration.getDays()).to.equal(undefined);
+      expect(duration.getHours()).to.equal(undefined);
+      expect(duration.getMinutes()).to.equal(1);
+      expect(duration.getSeconds()).to.equal(undefined);
+
+    });
+
+    it('should overflow hours', function(){
+
+      var start = new Simple('+0999-12-31T23:00:00'),
+          end = new Simple('+1000-01-01T00:00:00'),
+          duration = GedcomXDate.getDuration(start, end);
+
+      expect(duration.getYears()).to.equal(undefined);
+      expect(duration.getMonths()).to.equal(undefined);
+      expect(duration.getDays()).to.equal(undefined);
+      expect(duration.getHours()).to.equal(1);
+      expect(duration.getMinutes()).to.equal(undefined);
+      expect(duration.getSeconds()).to.equal(undefined);
+
+    });
+
+    it('should overflow days', function(){
+
+      var start = new Simple('+0999-12-31T00:00:00'),
+          end = new Simple('+1000-01-01T00:00:00'),
+          duration = GedcomXDate.getDuration(start, end);
+
+      expect(duration.getYears()).to.equal(undefined);
+      expect(duration.getMonths()).to.equal(undefined);
+      expect(duration.getDays()).to.equal(1);
+      expect(duration.getHours()).to.equal(undefined);
+      expect(duration.getMinutes()).to.equal(undefined);
+      expect(duration.getSeconds()).to.equal(undefined);
+
+    });
+
+    it('should overflow months', function(){
+
+      var start = new Simple('+0999-12-01T00:00:00'),
+          end = new Simple('+1000-01-01T00:00:00'),
+          duration = GedcomXDate.getDuration(start, end);
+
+      expect(duration.getYears()).to.equal(undefined);
+      expect(duration.getMonths()).to.equal(1);
+      expect(duration.getDays()).to.equal(undefined);
+      expect(duration.getHours()).to.equal(undefined);
+      expect(duration.getMinutes()).to.equal(undefined);
+      expect(duration.getSeconds()).to.equal(undefined);
+
+    });
+
+    it('should overflow years', function(){
+
+      var start = new Simple('+0999-01-01T00:00:00'),
+          end = new Simple('+1000-01-01T00:00:00'),
+          duration = GedcomXDate.getDuration(start, end);
+
+      expect(duration.getYears()).to.equal(1);
+      expect(duration.getMonths()).to.equal(undefined);
+      expect(duration.getDays()).to.equal(undefined);
+      expect(duration.getHours()).to.equal(undefined);
+      expect(duration.getMinutes()).to.equal(undefined);
+      expect(duration.getSeconds()).to.equal(undefined);
+
+    });
+
+    it('should error if start > end years', function(){
+
+      var start = new Simple('+0999-01-01T00:00:00'),
+          end = new Simple('+1000-01-01T00:00:00');
+
+      expect(function() {
+        duration = GedcomXDate.getDuration(end, start);
+      }).to.throw(Error, 'Start Date must be less than End Date');
+
+    });
+
+    it('should zip end', function(){
+
+      var start = new Simple('+0999-01-01T00:00:00Z'),
+          end = new Simple('+1000'),
+          duration = GedcomXDate.getDuration(start, end);
+
+      expect(duration.getYears()).to.equal(1);
+      expect(duration.getMonths()).to.equal(undefined);
+      expect(duration.getDays()).to.equal(undefined);
+      expect(duration.getHours()).to.equal(undefined);
+      expect(duration.getMinutes()).to.equal(undefined);
+      expect(duration.getSeconds()).to.equal(undefined);
+
+    });
+
+    it('should zip start', function(){
+
+      var start = new Simple('+0999'),
+          end = new Simple('+1000-01-01T00:00:00Z'),
+          duration = GedcomXDate.getDuration(start, end);
+
+      expect(duration.getYears()).to.equal(1);
+      expect(duration.getMonths()).to.equal(undefined);
+      expect(duration.getDays()).to.equal(undefined);
+      expect(duration.getHours()).to.equal(undefined);
+      expect(duration.getMinutes()).to.equal(undefined);
+      expect(duration.getSeconds()).to.equal(undefined);
+
+    });
 
   });
 

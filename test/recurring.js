@@ -13,6 +13,13 @@ describe('Recurring', function(){
 
       expect(recurring).to.be.instanceof(Object);
     });
+
+    it('should error on invalid count', function(){
+
+      expect(function() {
+        var recurring = new Recurring('null', '+1000', null);
+      }).to.throw('Invalid recurrence count: not a number');
+    });
   });
 
   describe("#getType()", function(){
