@@ -2,7 +2,6 @@
 A GEDCOM-X Date Parser for Javascript, fully compliant with the [spec](https://github.com/FamilySearch/gedcomx/blob/master/specifications/date-format-specification.md).
 
 # TODO
-* Add toFormalString()
 * Implement Informal Date Parsing
 
 # Download
@@ -71,6 +70,8 @@ Returns the timezone offset hours as a `number` or `undefined`.
 ### getTZMinutes()
 Returns the timezone offset minutes as a `number` or `undefined`.
 
+### toFormalString()
+Returns the formal GedcomX representation as a `string`.
 
 
 ## Range
@@ -98,6 +99,8 @@ Returns a Duration or `undefined`. Also accessible via the attribute `duration`.
 ### getEnd()
 Returns a Single or `undefined`. Also accessible via the attribute `end`.
 
+### toFormalString()
+Returns the formal GedcomX representation as a `string`.
 
 ## Recurring
 A Recurring date is the same as a Range with a few more methods.
@@ -121,6 +124,8 @@ Returns the **last** instance of the recurring date or `undefined`.
 ### getNth()
 Returns the Nth occurence of this Date
 
+### toFormalString()
+Returns the formal GedcomX representation as a `string`.
 
 ## Duration
 Represents a duration of time.
@@ -154,6 +159,8 @@ Returns the minutes as a `number` or `undefined`.
 ### getSeconds()
 Returns the seconds as a `number` or `undefined`.
 
+### toFormalString()
+Returns the formal GedcomX representation as a `string`.
 
 
 ## Utils

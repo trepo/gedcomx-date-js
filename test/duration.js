@@ -1,4 +1,4 @@
-var libPath = process.env.VGRAPH_COV ? '../lib-cov' : '../lib',
+var libPath = process.env.TEST_COV ? '../lib-cov' : '../lib',
     path = require('path'),
     expect = require('chai').expect,
     Duration = require(path.join(libPath, 'duration.js'));
@@ -225,6 +225,13 @@ describe('Duration', function(){
     it('should return the correct seconds', function(){
       var duration = new Duration('PT90S');
       expect(duration.getSeconds()).to.equal(90);
+    });
+  });
+
+  describe("#toFormalString()", function(){
+    it('should return the correct string', function(){
+      var duration = new Duration('P1Y1M1DT1H1M1S');
+      expect(duration.toFormalString()).to.equal('P1Y1M1DT1H1M1S');
     });
   });
 

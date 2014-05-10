@@ -1,4 +1,4 @@
-var libPath = process.env.VGRAPH_COV ? '../lib-cov' : '../lib',
+var libPath = process.env.TEST_COV ? '../lib-cov' : '../lib',
     path = require('path'),
     expect = require('chai').expect,
     Approximate = require(path.join(libPath, 'approximate.js'));
@@ -61,6 +61,14 @@ describe('Approximate', function(){
       var approximate = new Approximate();
 
       expect(approximate.isApproximate()).to.equal(true);
+    });
+
+  });
+
+  describe("#toFormalString()", function(){
+    it('should return the correct string', function(){
+      var approximate = new Approximate('A+1000-01-01T12:30:15Z');
+      expect(approximate.toFormalString()).to.equal('A+1000-01-01T12:30:15Z');
     });
 
   });

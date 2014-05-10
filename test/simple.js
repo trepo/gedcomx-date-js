@@ -1,4 +1,4 @@
-var libPath = process.env.VGRAPH_COV ? '../lib-cov' : '../lib',
+var libPath = process.env.TEST_COV ? '../lib-cov' : '../lib',
     path = require('path'),
     expect = require('chai').expect,
     Simple = require(path.join(libPath, 'simple.js'));
@@ -504,6 +504,23 @@ describe('Simple', function(){
       expect(simple.getTZMinutes()).to.equal(0);
     });
 
+  });
+
+  describe("#toFormalString()", function(){
+    it('should return the correct string', function(){
+      var simple = new Simple('+1000-01-01T12:30:15Z');
+      expect(simple.toFormalString()).to.equal('+1000-01-01T12:30:15Z');
+    });
+
+    it('should deal with timezones', function(){
+      var simple = new Simple('+1000-01-01T12+08:30');
+      expect(simple.toFormalString()).to.equal('+1000-01-01T12+08:30');
+    });
+
+    it('should deal with negative years and timezones', function(){
+      var simple = new Simple('-1000-01-01T12-08:30');
+      expect(simple.toFormalString()).to.equal('-1000-01-01T12-08:30');
+    });
   });
 
 });

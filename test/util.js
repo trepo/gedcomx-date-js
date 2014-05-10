@@ -1,4 +1,4 @@
-var libPath = process.env.VGRAPH_COV ? '../lib-cov' : '../lib',
+var libPath = process.env.TEST_COV ? '../lib-cov' : '../lib',
     path = require('path'),
     fs = require('fs'),
     expect = require('chai').expect,
