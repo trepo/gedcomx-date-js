@@ -164,7 +164,7 @@ Returns the formal GedcomX representation as a `string`.
 
 
 ## Utils
-There are a few convinience functions and attributes exposed through the main object
+There are a few convenience functions and attributes exposed through the main object
 
 ### GedcomXDate.version
 Will be a string set to the version of GedcomXDate. 
