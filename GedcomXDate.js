@@ -330,7 +330,7 @@ function GedcomXDate(str) {
 /**
  * The version of this library.
  */
-GedcomXDate.version = '0.2.0';
+GedcomXDate.version = '0.2.1';
 
 /**
  * Expose addDuration.
