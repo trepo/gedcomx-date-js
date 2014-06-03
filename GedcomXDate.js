@@ -990,13 +990,13 @@ function daysInMonth(month, year) {
     case 1:
     case 3:
     case 5:
-    case 6:
+    case 7:
     case 8:
     case 10:
     case 12:
       return 31;
     case 4:
-    case 7:
+    case 6:
     case 9:
     case 11:
       return 30;
@@ -1507,8 +1507,11 @@ process.argv = [];
 function noop() {}
 
 process.on = noop;
+process.addListener = noop;
 process.once = noop;
 process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
 process.emit = noop;
 
 process.binding = function (name) {
@@ -2117,7 +2120,7 @@ function hasOwnProperty(obj, prop) {
   return Object.prototype.hasOwnProperty.call(obj, prop);
 }
 
-}).call(this,_dereq_("/Users/johnclark/repos/trepo/gedcomx-date-js/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":11,"/Users/johnclark/repos/trepo/gedcomx-date-js/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":10,"inherits":9}]},{},[3])
+}).call(this,_dereq_("FWaASH"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./support/isBuffer":11,"FWaASH":10,"inherits":9}]},{},[3])
 (3)
 });

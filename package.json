@@ -11,6 +11,7 @@
   "license": "MIT",
   "main": "lib/gedcomx-date.js",
   "scripts": {
+    "test": "mocha",
     "build": "./node_modules/browserify/bin/cmd.js lib/gedcomx-date.js -s GedcomXDate -o GedcomXDate.js"
   },
   "dependencies": {
