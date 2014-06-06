@@ -330,7 +330,7 @@ function GedcomXDate(str) {
 /**
  * The version of this library.
  */
-GedcomXDate.version = '0.2.1';
+GedcomXDate.version = '0.2.2';
 
 /**
  * Expose addDuration.
@@ -1297,7 +1297,7 @@ function getDuration(startDate, endDate) {
     duration = ('0000'+(end.year-start.year)).substr(-4,4)+'Y'+duration;
   }
 
-  if(duration == '') {
+  if(end.year-start.year < 0 || duration == '') {
     throw new Error('Start Date must be less than End Date');
   }
 
