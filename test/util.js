@@ -331,13 +331,13 @@ describe('Util', function(){
 
     });
 
-    it('should error if start > end years', function(){
+    it('should error if start >= end years', function(){
 
-      var start = new Simple('+0999-01-01T00:00:00'),
-          end = new Simple('+1000-01-01T00:00:00');
+      var start = new Simple('+1900-07-03'),
+          end = new Simple('+1899-05-10');
 
       expect(function() {
-        duration = GedcomXDate.getDuration(end, start);
+        duration = GedcomXDate.getDuration(start, end);
       }).to.throw(Error, 'Start Date must be less than End Date');
 
     });
