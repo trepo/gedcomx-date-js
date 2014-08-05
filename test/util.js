@@ -385,10 +385,10 @@ describe('Util', function(){
 
   });
   
-  describe("#today()", function(){
+  describe("#now()", function(){
   
     it('should return simple date representing current date and time', function(){
-      var gxDate = GedcomXDate.today(),
+      var gxDate = GedcomXDate.now(),
           jsDate = new Date();
           
       expect(gxDate.isApproximate()).to.be.false;
