@@ -215,3 +215,6 @@ Adds duration to date and returns a new Single date.
 
 ### GedcomXDate.multiplyDuration(duration, number)
 Multiplies a duration by a positive number and returns a new Duration.
+
+### GedcomXDate.now()
+Returns a Simple date representing the current date and time
