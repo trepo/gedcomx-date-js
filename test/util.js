@@ -384,5 +384,22 @@ describe('Util', function(){
     });
 
   });
+  
+  describe("#today()", function(){
+  
+    it('should return simple date representing current date and time', function(){
+      var gxDate = GedcomXDate.today(),
+          jsDate = new Date();
+          
+      expect(gxDate.isApproximate()).to.be.false;
+      expect(gxDate.getYear()).to.equal(jsDate.getFullYear());
+      expect(gxDate.getMonth()).to.equal(jsDate.getMonth()+1);
+      expect(gxDate.getDay()).to.equal(jsDate.getDate());
+      expect(gxDate.getHours()).to.equal(jsDate.getHours());
+      expect(gxDate.getMinutes()).to.equal(jsDate.getMinutes());
+      expect(gxDate.getSeconds()).to.equal(jsDate.getSeconds());
+    });
+  
+  });
 
 });
