@@ -216,5 +216,8 @@ Adds duration to date and returns a new Single date.
 ### GedcomXDate.multiplyDuration(duration, number)
 Multiplies a duration by a positive number and returns a new Duration.
 
+### GedcomXDate.fromJSDate(Date)
+Returns a Simple date representation of the given JavaScript Date.
+
 ### GedcomXDate.now()
-Returns a Simple date representing the current date and time
+Returns a Simple date representing the current date and time.
