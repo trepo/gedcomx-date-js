@@ -384,5 +384,40 @@ describe('Util', function(){
     });
 
   });
+  
+  describe("#fromJSDate()", function(){
+  
+    it('should return the correct simple date', function(){
+      var jsDate = new Date('October 6 1984'),
+          gxDate = GedcomXDate.fromJSDate(jsDate);
+      
+      expect(gxDate.isApproximate()).to.be.false;
+      expect(gxDate.getYear()).to.equal(1984);
+      expect(gxDate.getMonth()).to.equal(10);
+      expect(gxDate.getDay()).to.equal(6);
+      expect(gxDate.getHours()).to.equal(0);
+      expect(gxDate.getMinutes()).to.equal(0);
+      expect(gxDate.getSeconds()).to.equal(0);
+      expect(gxDate.toFormalString()).to.equal('+1984-10-06T00:00:00Z');
+    });
+    
+  });
+  
+  describe("#now()", function(){
+  
+    it('should return simple date representing current date and time', function(){
+      var gxDate = GedcomXDate.now(),
+          jsDate = new Date();
+          
+      expect(gxDate.isApproximate()).to.be.false;
+      expect(gxDate.getYear()).to.equal(jsDate.getFullYear());
+      expect(gxDate.getMonth()).to.equal(jsDate.getMonth()+1);
+      expect(gxDate.getDay()).to.equal(jsDate.getDate());
+      expect(gxDate.getHours()).to.equal(jsDate.getHours());
+      expect(gxDate.getMinutes()).to.equal(jsDate.getMinutes());
+      expect(gxDate.getSeconds()).to.equal(jsDate.getSeconds());
+    });
+  
+  });
 
 });
