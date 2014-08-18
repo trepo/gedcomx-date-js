@@ -241,6 +241,15 @@ describe('Util', function(){
   
   describe("#getDuration(start, end)", function(){
     
+    it('should only accept simple dates', function(){
+      var start = new GedcomXDate('+1980/+1985'),
+          end = new Simple('+1990'),
+          fn = function(){
+            var duration = GedcomXDate.getDuration(start, end);
+          };
+      expect(fn).to.throw(/must be simple dates/);
+    });
+    
     it('should overflow seconds', function(){
 
       var start = new Simple('+0999-12-31T23:59:59'),
