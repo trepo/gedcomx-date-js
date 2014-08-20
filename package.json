@@ -1,9 +1,14 @@
 {
   "name": "gedcomx-date",
   "description": "A GEDCOM-X Date Parser, fully compliant with the official specification",
-  "keywords": ["GEDCOM-X", "GEDCOMX", "GEDCOM", "date"],
+  "keywords": [
+    "GEDCOM-X",
+    "GEDCOMX",
+    "GEDCOM",
+    "date"
+  ],
   "homepage": "https://github.com/trepo/gedcomx-date-js/",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "repository": {
     "type": "git",
     "url": "git@github.com:trepo/gedcomx-date-js.git"
@@ -14,8 +19,7 @@
     "test": "mocha",
     "build": "./node_modules/browserify/bin/cmd.js lib/gedcomx-date.js -s GedcomXDate -o GedcomXDate.js"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "chai": "~1.9.1",
     "browserify": "~3.46.0"
