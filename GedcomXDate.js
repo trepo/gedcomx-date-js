@@ -1,6 +1,6 @@
-!function(e){if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.GedcomXDate=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
-var util = _dereq_('util'),
-    Simple = _dereq_('./simple.js');
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+var util = require('util'),
+    Simple = require('./simple.js');
 
 /**
  * An approximate GedcomX Date.
@@ -40,7 +40,7 @@ Approximate.prototype.toFormalString = function() {
 }
 
 module.exports = Approximate;
-},{"./simple.js":6,"util":12}],2:[function(_dereq_,module,exports){
+},{"./simple.js":6,"util":12}],2:[function(require,module,exports){
 /**
  * A gedcomX Duration
  */
@@ -98,7 +98,7 @@ Duration.prototype._parseNormalized = function(str) {
         if(valid.indexOf('Y') == -1) {
           throw new Error('Invalid Duration: years out of order');
         }
-        this._years = parseInt(currentNum);
+        this._years = parseInt(currentNum, 10);
         seen.push('Y');
         valid = valid.slice(valid.indexOf('Y')+1);
         currentNum = '';
@@ -114,7 +114,7 @@ Duration.prototype._parseNormalized = function(str) {
           if(valid.indexOf('Mi') == -1) {
             throw new Error('Invalid Duration: minutes out of order');
           }
-          this._minutes = parseInt(currentNum);
+          this._minutes = parseInt(currentNum, 10);
           seen.push('Mi');
           valid = valid.slice(valid.indexOf('Mi')+1);
           currentNum = '';
@@ -128,7 +128,7 @@ Duration.prototype._parseNormalized = function(str) {
           if(valid.indexOf('Mo') == -1) {
             throw new Error('Invalid Duration: months out of order');
           }
-          this._months = parseInt(currentNum);
+          this._months = parseInt(currentNum, 10);
           valid = valid.slice(valid.indexOf('Mo')+1);
           seen.push('Mo');
           currentNum = '';
@@ -144,7 +144,7 @@ Duration.prototype._parseNormalized = function(str) {
         if(valid.indexOf('D') == -1) {
           throw new Error('Invalid Duration: days out of order');
         }
-        this._days = parseInt(currentNum);
+        this._days = parseInt(currentNum, 10);
         seen.push('D');
         valid = valid.slice(valid.indexOf('D')+1);
         currentNum = '';
@@ -162,7 +162,7 @@ Duration.prototype._parseNormalized = function(str) {
         if(valid.indexOf('H') == -1) {
           throw new Error('Invalid Duration: hours out of order');
         }
-        this._hours = parseInt(currentNum);
+        this._hours = parseInt(currentNum, 10);
         seen.push('H');
         valid = valid.slice(valid.indexOf('H')+1);
         currentNum = '';
@@ -178,7 +178,7 @@ Duration.prototype._parseNormalized = function(str) {
           throw new Error('Invalid Duration: duplicate seconds');
         }
         // Note that you cannot have seconds out of order because it is last
-        this._seconds = parseInt(currentNum);
+        this._seconds = parseInt(currentNum, 10);
         seen.push('S');
         valid = [];
         currentNum = '';
@@ -297,13 +297,13 @@ Duration.prototype.toFormalString = function() {
 }
 
 module.exports = Duration;
-},{}],3:[function(_dereq_,module,exports){
-var GedUtil = _dereq_('./util.js'),
-    Simple = _dereq_('./simple.js'),
-    Duration = _dereq_('./duration.js'),
-    Approximate = _dereq_('./approximate.js'),
-    Recurring = _dereq_('./recurring.js'),
-    Range = _dereq_('./range.js');
+},{}],3:[function(require,module,exports){
+var GedUtil = require('./util.js'),
+    Simple = require('./simple.js'),
+    Duration = require('./duration.js'),
+    Approximate = require('./approximate.js'),
+    Recurring = require('./recurring.js'),
+    Range = require('./range.js');
 
 /**
  * A GedcomX Date.
@@ -352,12 +352,22 @@ GedcomXDate.getDuration = GedUtil.getDuration;
  */
 GedcomXDate.daysInMonth = GedUtil.daysInMonth;
 
+/**
+ * Expose now.
+ */
+GedcomXDate.now = GedUtil.now;
+
+/**
+ * Expose fromJSDate.
+ */
+GedcomXDate.fromJSDate = GedUtil.fromJSDate;
+
 module.exports = GedcomXDate;
-},{"./approximate.js":1,"./duration.js":2,"./range.js":4,"./recurring.js":5,"./simple.js":6,"./util.js":8}],4:[function(_dereq_,module,exports){
-var GedUtil = _dereq_('./util.js'),
-    Simple = _dereq_('./simple.js'),
-    Duration = _dereq_('./duration.js'),
-    Approximate = _dereq_('./approximate.js');
+},{"./approximate.js":1,"./duration.js":2,"./range.js":4,"./recurring.js":5,"./simple.js":6,"./util.js":8}],4:[function(require,module,exports){
+var GedUtil = require('./util.js'),
+    Simple = require('./simple.js'),
+    Duration = require('./duration.js'),
+    Approximate = require('./approximate.js');
 
 /**
  * A GedcomX Range.
@@ -478,10 +488,10 @@ Range.prototype.toFormalString = function() {
 }
 
 module.exports = Range;
-},{"./approximate.js":1,"./duration.js":2,"./simple.js":6,"./util.js":8}],5:[function(_dereq_,module,exports){
-var util = _dereq_('util'),
-    GedUtil = _dereq_('./util.js'),
-    Range = _dereq_('./range.js');
+},{"./approximate.js":1,"./duration.js":2,"./simple.js":6,"./util.js":8}],5:[function(require,module,exports){
+var util = require('util'),
+    GedUtil = require('./util.js'),
+    Range = require('./range.js');
 
 /**
  * A GedcomX Recurring Date.
@@ -506,7 +516,7 @@ function Recurring(str) {
     if(!(/^[0-9]+$/.test(countNum))) {
       throw new Error('Invalid recurrence count: not a number')
     }
-    this.count = parseInt(countNum);
+    this.count = parseInt(countNum, 10);
     if(this.count < 0) throw new Error('Invalid recurrence count');
   }
 
@@ -564,8 +574,8 @@ Recurring.prototype.toFormalString = function() {
 }
 
 module.exports = Recurring;
-},{"./range.js":4,"./util.js":8,"util":12}],6:[function(_dereq_,module,exports){
-var GlobalUtil = _dereq_('./util-global.js');
+},{"./range.js":4,"./util.js":8,"util":12}],6:[function(require,module,exports){
+var GlobalUtil = require('./util-global.js');
 /**
  * The simplest representation of a date.
  */
@@ -605,7 +615,7 @@ Simple.prototype._parse = function(str) {
   if(year.match(/^[+-][0-9]{4}$/) === null) {
     throw new Error('Invalid Date: Malformed year');
   }
-  this._year = parseInt(year);
+  this._year = parseInt(year, 10);
   offset += 5;
 
   if(offset == end) {
@@ -630,7 +640,7 @@ Simple.prototype._parse = function(str) {
   if(month.match(/^(0[1-9]|1[0-2])$/) === null) {
     throw new Error('Invalid Date: Malformed month');
   }
-  this._month = parseInt(month);
+  this._month = parseInt(month, 10);
   offset += 3;
 
   if(offset == end) {
@@ -676,7 +686,7 @@ Simple.prototype._parse = function(str) {
       }
       break;
   }
-  this._day = parseInt(day);
+  this._day = parseInt(day, 10);
   offset += 3;
 
   if(offset == end) return;
@@ -719,7 +729,7 @@ Simple.prototype._parseTime = function(str) {
       throw new Error('Invalid Date: Malformed hours');
     }
   }
-  this._hours = parseInt(hours);
+  this._hours = parseInt(hours, 10);
   offset += 2;
 
   if(offset == end) {
@@ -746,7 +756,7 @@ Simple.prototype._parseTime = function(str) {
   if(flag24 && minutes != '00') {
     throw new Error('Invalid Date: Hour of 24 requires 00 minutes');
   }
-  this._minutes = parseInt(minutes);
+  this._minutes = parseInt(minutes, 10);
   offset += 3;
 
   if(offset == end) {
@@ -773,7 +783,7 @@ Simple.prototype._parseTime = function(str) {
   if(flag24 && seconds != '00') {
     throw new Error('Invalid Date: Hour of 24 requires 00 seconds');
   }
-  this._seconds = parseInt(seconds);
+  this._seconds = parseInt(seconds, 10);
   offset += 3;
 
   if(offset == end) {
@@ -816,7 +826,7 @@ Simple.prototype._parseTimezone = function(str) {
   if(tzHours.match(/^[+-]([0-1][0-9]|2[0-3])$/) === null) {
     throw new Error('Invalid Date: Malformed timezone hours');
   }
-  this._tzHours = parseInt(tzHours);
+  this._tzHours = parseInt(tzHours, 10);
   // set tz minutes to clear out default local tz offset
   this._tzMinutes = 0;
   offset += 3;
@@ -837,7 +847,7 @@ Simple.prototype._parseTimezone = function(str) {
   if(tzMinutes.match(/^[0-5][0-9]$/) === null) {
     throw new Error('Invalid Date: Malformed timezone minutes');
   }
-  this._tzMinutes = parseInt(tzMinutes);
+  this._tzMinutes = parseInt(tzMinutes, 10);
   offset += 3;
 
   if(offset == end) {
@@ -976,7 +986,7 @@ Simple.prototype.toFormalString = function() {
 }
 
 module.exports = Simple;
-},{"./util-global.js":7}],7:[function(_dereq_,module,exports){
+},{"./util-global.js":7}],7:[function(require,module,exports){
 module.exports = {
   daysInMonth: daysInMonth
 }
@@ -1020,17 +1030,19 @@ function daysInMonth(month, year) {
       throw new Error('Unknown Month');
   }
 }
-},{}],8:[function(_dereq_,module,exports){
-var GlobalUtil = _dereq_('./util-global.js'),
-    Duration = _dereq_('./duration.js'),
-    Simple = _dereq_('./simple.js'),
-    Approximate = _dereq_('./approximate.js');
+},{}],8:[function(require,module,exports){
+var GlobalUtil = require('./util-global.js'),
+    Duration = require('./duration.js'),
+    Simple = require('./simple.js'),
+    Approximate = require('./approximate.js');
 
 module.exports = {
   getDuration: getDuration,
   daysInMonth: GlobalUtil.daysInMonth,
   addDuration: addDuration,
-  multiplyDuration: multiplyDuration
+  multiplyDuration: multiplyDuration,
+  now: now,
+  fromJSDate: fromJSDate
 }
 
 /**
@@ -1224,6 +1236,10 @@ function addDuration(startDate, duration) {
  * Returns the duration between the starting and ending date.
  */
 function getDuration(startDate, endDate) {
+  
+  if(!(startDate instanceof Simple && endDate instanceof Simple)){
+    throw new Error('Start and end dates must be simple dates');
+  }
   
   var start = getObjFromDate(startDate, true),
       end = getObjFromDate(endDate, true),
@@ -1434,7 +1450,22 @@ function getObjFromDate(date, adjustTimezone) {
   }
   return obj;
 }
-},{"./approximate.js":1,"./duration.js":2,"./simple.js":6,"./util-global.js":7}],9:[function(_dereq_,module,exports){
+
+/**
+ * Returns a new single date representing the current date
+ */
+function now(){
+  return fromJSDate(new Date());
+}
+
+/**
+ * Return a simple date object from a JavaScript date object
+ */
+function fromJSDate(date){
+  // Remove the millisecond time component
+  return new Simple('+' + date.toISOString().replace(/\.\d{3}/,''));
+};
+},{"./approximate.js":1,"./duration.js":2,"./simple.js":6,"./util-global.js":7}],9:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -1459,7 +1490,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],10:[function(_dereq_,module,exports){
+},{}],10:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -1524,14 +1555,14 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],11:[function(_dereq_,module,exports){
+},{}],11:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],12:[function(_dereq_,module,exports){
+},{}],12:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -2058,7 +2089,7 @@ function isPrimitive(arg) {
 }
 exports.isPrimitive = isPrimitive;
 
-exports.isBuffer = _dereq_('./support/isBuffer');
+exports.isBuffer = require('./support/isBuffer');
 
 function objectToString(o) {
   return Object.prototype.toString.call(o);
@@ -2102,7 +2133,7 @@ exports.log = function() {
  *     prototype.
  * @param {function} superCtor Constructor function to inherit prototype from.
  */
-exports.inherits = _dereq_('inherits');
+exports.inherits = require('inherits');
 
 exports._extend = function(origin, add) {
   // Don't do anything if add isn't an object
@@ -2120,7 +2151,5 @@ function hasOwnProperty(obj, prop) {
   return Object.prototype.hasOwnProperty.call(obj, prop);
 }
 
-}).call(this,_dereq_("FWaASH"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+}).call(this,require("FWaASH"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./support/isBuffer":11,"FWaASH":10,"inherits":9}]},{},[3])
-(3)
-});
