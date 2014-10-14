@@ -134,9 +134,9 @@ describe('Range', function(){
     it('should calculate tricky range correctly', function(){
       var range = new Range('+1970-01-31/+1973-02-01');
 
-      expect(range.duration.getYears()).to.equal(2);
-      expect(range.duration.getMonths()).to.equal(11);
-      expect(range.duration.getDays()).to.equal(29);
+      expect(range.duration.getYears()).to.equal(3);
+      expect(range.duration.getMonths()).to.equal(undefined);
+      expect(range.duration.getDays()).to.equal(1);
     });
     
     it('should calculate days correctly', function(){
