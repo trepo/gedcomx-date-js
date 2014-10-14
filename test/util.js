@@ -237,13 +237,13 @@ describe('Util', function(){
     });
     
     it('should handle simple month overflow', function(){
-      var start = new Simple('+1707-02-22'),
-          duration = new Duration('P8D'),
+      var start = new Simple('+1707-02-28'),
+          duration = new Duration('P1D'),
           end = GedcomXDate.addDuration(start, duration);
           
        expect(end.getYear()).to.equal(1707);
        expect(end.getMonth()).to.equal(3);
-       expect(end.getDay()).to.equal(2);
+       expect(end.getDay()).to.equal(1);
     });
 
   });
