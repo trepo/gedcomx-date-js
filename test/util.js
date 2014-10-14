@@ -309,6 +309,21 @@ describe('Util', function(){
       expect(duration.getSeconds()).to.equal(undefined);
 
     });
+    
+    it('should overflow days when months are not the same length', function(){
+      
+      var start = new Simple('+0999-11-30T00:00:00'),
+          end = new Simple('+0999-12-01T00:00:00'),
+          duration = GedcomXDate.getDuration(start, end);
+          
+      expect(duration.getYears()).to.equal(undefined);
+      expect(duration.getMonths()).to.equal(undefined);
+      expect(duration.getDays()).to.equal(1);
+      expect(duration.getHours()).to.equal(undefined);
+      expect(duration.getMinutes()).to.equal(undefined);
+      expect(duration.getSeconds()).to.equal(undefined);
+      
+    });
 
     it('should overflow months', function(){
 

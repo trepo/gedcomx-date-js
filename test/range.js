@@ -138,6 +138,13 @@ describe('Range', function(){
       expect(range.duration.getMonths()).to.equal(11);
       expect(range.duration.getDays()).to.equal(29);
     });
+    
+    it('should calculate days correctly', function(){
+      var range = new Range('+1999-02-28/+1999-03-01');
+      expect(range.duration.getYears()).to.not.exist;
+      expect(range.duration.getMonths()).to.not.exist;
+      expect(range.duration.getDays()).to.equal(1);
+    });
 
     it('should calculate approximate duration', function(){
       var range = new Range('A+1000/P1000Y');
