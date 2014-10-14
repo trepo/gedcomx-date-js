@@ -235,6 +235,16 @@ describe('Util', function(){
       }).to.throw(Error, 'New date out of range');
 
     });
+    
+    it('should handle simple month overflow', function(){
+      var start = new Simple('+1707-02-22'),
+          duration = new Duration('P8D'),
+          end = GedcomXDate.addDuration(start, duration);
+          
+       expect(end.getYear()).to.equal(1707);
+       expect(end.getMonth()).to.equal(3);
+       expect(end.getDay()).to.equal(2);
+    });
 
   });
 
