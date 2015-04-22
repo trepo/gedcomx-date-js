@@ -2,7 +2,7 @@
 A GEDCOM-X Date Library for Javascript, fully compliant with the [spec](https://github.com/FamilySearch/gedcomx/blob/master/specifications/date-format-specification.md).
 
 # Usage
-````javascript
+```js
 var GedcomXDate = require('gedcomx-date');
 
 var single = new GedcomXDate('+1900-01-01');
@@ -38,13 +38,13 @@ var halfDuration = GedcomXDate.multiplyDuration(newDuration, .5);
 
 console.log(newDuration.toFormalString());
 // P57Y1M
-````
+```
 
 ## Node.js
 You can install GedcomX-Date by cloning this repository or by using npm.
-````bash
+```bash
 npm install gedcomx-date
-````
+```
 
 ## Browser
 Download [GedcomXDate.js](GedcomXDate.js) and enjoy.
@@ -53,15 +53,13 @@ Download [GedcomXDate.js](GedcomXDate.js) and enjoy.
 # Tests
 
 There is a very comprehensive test suite.
-````bash
-# To run the tests cd to the repo directory and run
-mocha
+```bash
+# Run tests
+npm test
 
-# To generate the code coverage run
-./coverage/generate.sh
-````
-Install [mocha](http://visionmedia.github.io/mocha/) and [jscoverage](https://github.com/visionmedia/node-jscoverage) globally before runnings tests and generating coverage.
-
+# Generate code coverage
+npm run coverage
+```
 
 # Reference
 When you create a new GedcomXDate you pass in a formal date string into the contructor.
@@ -69,10 +67,10 @@ It will parse and validate the string, and return an object representation of it
 If there is a parsing error GedcomXDate with throw an error.
 
 ## Single
-````javascript
+```js
 var date = new GedcomXDate('A+2000-01-01');
 // date will be a Single Date
-````
+```
 
 ### getType()
 Returns the `string` 'single'.
@@ -110,13 +108,13 @@ Returns the formal GedcomX representation as a `string`.
 
 ## Range
 A range has three components, start, end, and duration
-````javascript
+```js
 var date = GedcomXDate('A+1000-01-01/+2000-12-31');
 
 // date.start will be a simple date
 // date.end will be a simple date
 // date.duration will be a duration
-````
+```
 
 ### getType()
 Returns the `string` 'range'.
@@ -139,9 +137,9 @@ Returns the formal GedcomX representation as a `string`.
 
 ## Recurring
 A Recurring date is the same as a Range with a few more methods.
-````javascript
+```js
 var date = GedcomXDate('R2/+1000-01-01/+2000-12-31');
-````
+```
 
 ### getType()
 Returns the `string` 'recurring'.
@@ -164,11 +162,11 @@ Returns the formal GedcomX representation as a `string`.
 
 ## Duration
 Represents a duration of time.
-````javascript
+```js
 var date = GedcomXDate('A+1000-01-01/P100Y');
 
 var duration = date.getDuration();
-````
+```
 
 ### getType()
 Returns the `string` 'duration'.
