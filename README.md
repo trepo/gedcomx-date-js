@@ -228,8 +228,11 @@ Dates may either be in string format or already be Single date objects.
 
 This function is designed to be used as the custom compare function
 for [Array.sort()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort).
-Therefore it return 0 if the dates are equal, -1 if date1 occurs before date2,
-or 1 if date1 occurs after date2.
+Returns:
+
+* 0 if the dates are equal
+* -1 if date1 occurs before date2
+* 1 if date1 occurs after date2
 
 ```js
 
