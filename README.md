@@ -1,7 +1,14 @@
+[![Build Status](https://travis-ci.org/genealogysystems/gedcomx-date-js.svg?branch=build)](https://travis-ci.org/genealogysystems/gedcomx-date-js)
+[![Coverage Status](https://coveralls.io/repos/genealogysystems/gedcomx-date-js/badge.svg)](https://coveralls.io/r/genealogysystems/gedcomx-date-js)
+[![Dependency Status](https://david-dm.org/genealogysystems/gedcomx-date-js.svg)](https://david-dm.org/genealogysystems/gedcomx-date-js)
+[![devDependency Status](https://david-dm.org/genealogysystems/gedcomx-date-js/dev-status.svg)](https://david-dm.org/genealogysystems/gedcomx-date-js#info=devDependencies)
+
 # GedcomX-Date
+
 A GEDCOM-X Date Library for Javascript, fully compliant with the [spec](https://github.com/FamilySearch/gedcomx/blob/master/specifications/date-format-specification.md).
 
 # Usage
+
 ```js
 var GedcomXDate = require('gedcomx-date');
 
@@ -41,12 +48,14 @@ console.log(newDuration.toFormalString());
 ```
 
 ## Node.js
+
 You can install GedcomX-Date by cloning this repository or by using npm.
 ```bash
 npm install gedcomx-date
 ```
 
 ## Browser
+
 Download [GedcomXDate.js](GedcomXDate.js) and enjoy.
 (Packaged with love by [browserify](http://browserify.org/))
 
@@ -62,11 +71,13 @@ npm run coverage
 ```
 
 # Reference
+
 When you create a new GedcomXDate you pass in a formal date string into the contructor.
 It will parse and validate the string, and return an object representation of it.
 If there is a parsing error GedcomXDate with throw an error.
 
 ## Single
+
 ```js
 var date = new GedcomXDate('A+2000-01-01');
 // date will be a Single Date
