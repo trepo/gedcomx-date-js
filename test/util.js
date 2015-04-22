@@ -245,6 +245,15 @@ describe('Util', function(){
        expect(end.getMonth()).to.equal(3);
        expect(end.getDay()).to.equal(1);
     });
+    
+    it('complex case', function(){
+      var start = new Simple('+1771-08-30'),
+          duration = new Duration('P1M1D'),
+          end = GedcomXDate.addDuration(start, duration);
+      expect(end.getYear()).to.equal(1771);
+      expect(end.getMonth()).to.equal(10);
+      expect(end.getDay()).to.equal(1);
+    })
 
   });
 
