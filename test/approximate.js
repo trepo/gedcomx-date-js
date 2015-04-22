@@ -1,7 +1,6 @@
-var libPath = process.env.TEST_COV ? '../lib-cov' : '../lib',
-    path = require('path'),
+var path = require('path'),
     expect = require('chai').expect,
-    Approximate = require(path.join(libPath, 'approximate.js'));
+    Approximate = require(path.join('../lib', 'approximate.js'));
 
 describe('Approximate', function(){
 

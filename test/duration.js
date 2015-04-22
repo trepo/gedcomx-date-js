@@ -1,7 +1,6 @@
-var libPath = process.env.TEST_COV ? '../lib-cov' : '../lib',
-    path = require('path'),
+var path = require('path'),
     expect = require('chai').expect,
-    Duration = require(path.join(libPath, 'duration.js'));
+    Duration = require(path.join('../lib', 'duration.js'));
 
 describe('Duration', function(){
 

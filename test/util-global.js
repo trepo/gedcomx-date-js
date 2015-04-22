@@ -1,7 +1,6 @@
-var libPath = process.env.TEST_COV ? '../lib-cov' : '../lib',
-    path = require('path'),
+var path = require('path'),
     expect = require('chai').expect,
-    Util = require(path.join(libPath, 'util-global.js'));
+    Util = require(path.join('../lib', 'util-global.js'));
 
 describe('Util-Global', function(){
  

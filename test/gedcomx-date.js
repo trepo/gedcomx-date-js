@@ -1,13 +1,12 @@
-var libPath = process.env.TEST_COV ? '../lib-cov' : '../lib',
-    path = require('path'),
+var path = require('path'),
     fs = require('fs'),
     expect = require('chai').expect,
-    Simple = require(path.join(libPath, 'simple.js')),
-    Approximate = require(path.join(libPath, 'approximate.js')),
-    Recurring = require(path.join(libPath, 'recurring.js')),
-    Duration = require(path.join(libPath, 'duration.js')),
-    Range = require(path.join(libPath, 'range.js')),
-    GedcomXDate = require(path.join(libPath, 'gedcomx-date.js'));
+    Simple = require(path.join('../lib', 'simple.js')),
+    Approximate = require(path.join('../lib', 'approximate.js')),
+    Recurring = require(path.join('../lib', 'recurring.js')),
+    Duration = require(path.join('../lib', 'duration.js')),
+    Range = require(path.join('../lib', 'range.js')),
+    GedcomXDate = require(path.join('../lib', 'gedcomx-date.js'));
 
 describe('GedcomXDate', function(){
 
