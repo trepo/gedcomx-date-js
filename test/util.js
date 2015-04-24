@@ -434,16 +434,16 @@ describe('Util', function(){
     it('should throw error for non simple dates', function(){
       expect(function(){
         GedcomXDate.compare('+1980/+1984', '+1893-02-05');
-      }).to.throw(Error);
+      }).to.throw(Error, '+1980/+1984 is not a simple date. Can only compare simple dates.');
     });
     
     it('should throw error for bad input', function(){
       expect(function(){
         GedcomXDate.compare('+1980', 1985);
-      }).to.throw(Error);
+      }).to.throw(Error, 'Bad input. Can only compare simple dates.');
       expect(function(){
         GedcomXDate.compare(1980, '+1985');
-      }).to.throw(Error);
+      }).to.throw(Error, 'Bad input. Can only compare simple dates.');
     });
     
     it('should work for objects already created', function(){
@@ -474,10 +474,10 @@ describe('Util', function(){
       expect(GedcomXDate.compare('+1895-08-13', '+1895-03-13')).to.equal(1);
     });
     
-    it('should work for partial dates', function(){
-      expect(GedcomXDate.compare('+1776-03-05', '+1776')).to.equal(0);
-      expect(GedcomXDate.compare('+1776-01', '+1776-02-16')).to.equal(-1);
-      expect(GedcomXDate.compare('+1776-09', '+1776-01-19')).to.equal(1);
+    it('should not work for partial dates', function(){
+      expect(function(){
+        GedcomXDate.compare('+1776-03-05', '+1776');
+      }).to.throw(Error, 'Unable to compare dates with different specificities.');
     });
     
     it('should work for equal dates with different times', function(){
