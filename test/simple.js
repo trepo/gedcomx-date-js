@@ -1,7 +1,6 @@
-var libPath = process.env.TEST_COV ? '../lib-cov' : '../lib',
-    path = require('path'),
+var path = require('path'),
     expect = require('chai').expect,
-    Simple = require(path.join(libPath, 'simple.js'));
+    Simple = require(path.join('../lib', 'simple.js'));
 
 describe('Simple', function(){
 

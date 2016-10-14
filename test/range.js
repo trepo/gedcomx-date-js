@@ -1,10 +1,8 @@
-var libPath = process.env.TEST_COV ? '../lib-cov' : '../lib',
-    path = require('path'),
+var path = require('path'),
     expect = require('chai').expect,
-    Simple = require(path.join(libPath, 'simple.js')),
-    Approximate = require(path.join(libPath, 'approximate.js')),
-    Duration = require(path.join(libPath, 'duration.js')),
-    Range = require(path.join(libPath, 'range.js'));
+    Simple = require(path.join('../lib', 'simple.js')),
+    Duration = require(path.join('../lib', 'duration.js')),
+    Range = require(path.join('../lib', 'range.js'));
 
 describe('Range', function(){
 

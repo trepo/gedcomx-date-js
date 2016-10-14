@@ -1,9 +1,6 @@
-var libPath = process.env.TEST_COV ? '../lib-cov' : '../lib',
-    path = require('path'),
+var path = require('path'),
     expect = require('chai').expect,
-    Simple = require(path.join(libPath, 'simple.js')),
-    Approximate = require(path.join(libPath, 'approximate.js')),
-    Recurring = require(path.join(libPath, 'recurring.js'));
+    Recurring = require(path.join('../lib', 'recurring.js'));
 
 describe('Recurring', function(){
   describe("#(start, end)", function(){
