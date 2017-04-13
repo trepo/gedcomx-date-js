@@ -60,7 +60,7 @@ mocha
 # To generate the code coverage run
 ./coverage/generate.sh
 ````
-Install [mocha](http://visionmedia.github.io/mocha/) and [jscoverage](https://github.com/visionmedia/node-jscoverage) globally before runnings tests and generating coverage.
+Install [mocha](http://mochajs.org/) and [jscoverage](https://github.com/visionmedia/node-jscoverage) globally before runnings tests and generating coverage.
 
 
 # Reference
