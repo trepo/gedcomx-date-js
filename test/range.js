@@ -125,7 +125,6 @@ describe('Range', function(){
 
     it('should calculate range correctly', function(){
       var range = new Range('+1000-02-03/+2000');
-
       expect(range.duration.getYears()).to.equal(999);
       expect(range.duration.getMonths()).to.equal(10);
       expect(range.duration.getDays()).to.equal(29);
@@ -133,15 +132,20 @@ describe('Range', function(){
 
     it('should calculate tricky range correctly', function(){
       var range = new Range('+1970-01-31/+1973-02-01');
-
-      expect(range.duration.getYears()).to.equal(2);
-      expect(range.duration.getMonths()).to.equal(11);
-      expect(range.duration.getDays()).to.equal(29);
+      expect(range.duration.getYears()).to.equal(3);
+      expect(range.duration.getMonths()).to.equal(undefined);
+      expect(range.duration.getDays()).to.equal(1);
+    });
+    
+    it('should calculate days correctly', function(){
+      var range = new Range('+1999-02-28/+1999-03-01');
+      expect(range.duration.getYears()).to.not.exist;
+      expect(range.duration.getMonths()).to.not.exist;
+      expect(range.duration.getDays()).to.equal(1);
     });
 
     it('should calculate approximate duration', function(){
       var range = new Range('A+1000/P1000Y');
-
       expect(range.end.getYear()).to.equal(2000);
       expect(range.isApproximate()).to.equal(true);
     });

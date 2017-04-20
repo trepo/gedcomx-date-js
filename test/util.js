@@ -235,6 +235,25 @@ describe('Util', function(){
       }).to.throw(Error, 'New date out of range');
 
     });
+    
+    it('should handle simple month overflow', function(){
+      var start = new Simple('+1707-02-28'),
+          duration = new Duration('P1D'),
+          end = GedcomXDate.addDuration(start, duration);
+          
+       expect(end.getYear()).to.equal(1707);
+       expect(end.getMonth()).to.equal(3);
+       expect(end.getDay()).to.equal(1);
+    });
+    
+    it('complex case', function(){
+      var start = new Simple('+1771-08-30'),
+          duration = new Duration('P1M1D'),
+          end = GedcomXDate.addDuration(start, duration);
+      expect(end.getYear()).to.equal(1771);
+      expect(end.getMonth()).to.equal(10);
+      expect(end.getDay()).to.equal(1);
+    })
 
   });
 
@@ -308,6 +327,21 @@ describe('Util', function(){
       expect(duration.getMinutes()).to.equal(undefined);
       expect(duration.getSeconds()).to.equal(undefined);
 
+    });
+    
+    it('should overflow days when months are not the same length', function(){
+      
+      var start = new Simple('+0999-11-30T00:00:00'),
+          end = new Simple('+0999-12-01T00:00:00'),
+          duration = GedcomXDate.getDuration(start, end);
+          
+      expect(duration.getYears()).to.equal(undefined);
+      expect(duration.getMonths()).to.equal(undefined);
+      expect(duration.getDays()).to.equal(1);
+      expect(duration.getHours()).to.equal(undefined);
+      expect(duration.getMinutes()).to.equal(undefined);
+      expect(duration.getSeconds()).to.equal(undefined);
+      
     });
 
     it('should overflow months', function(){
