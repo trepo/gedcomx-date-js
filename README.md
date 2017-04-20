@@ -221,3 +221,33 @@ Returns a Simple date representation of the given JavaScript Date.
 
 ### GedcomXDate.now()
 Returns a Simple date representing the current date and time.
+
+### GedcomXDate.compare(date1, date2)
+Compare two dates. Only works for single dates of the same specificity.
+Dates may either be in string format or already be Single date objects.
+
+This function is designed to be used as the custom compare function
+for [Array.sort()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort).
+Returns:
+
+* 0 if the dates are equal
+* -1 if date1 occurs before date2
+* 1 if date1 occurs after date2
+
+```js
+// Dates as strings
+GedcomXDate.compare('+1845-11-13', '+1834-02-17');
+
+// Dates as objects
+var date1 = new GedcomXDate('+1394-07-19'),
+    date2 = new GedcomXDate('+1723-11-04');
+GedcomXDate.compare(date1, date2);
+
+// Mix and match
+GedcomXDate.compare('+1845-11-13', new GedcomXDate('+1834-02-17'));
+
+// The following will throw errors because the dates do not
+// have the same specificity.
+GedcomXDate.compare('+1845', '+1834-02-17');
+GedcomXDate.compare('+1845-11-13', '+1834-02-17T05:23:45');
+```

@@ -428,5 +428,72 @@ describe('Util', function(){
     });
   
   });
+  
+  describe("#compare()", function(){
+    
+    it('should throw error for non simple dates', function(){
+      expect(function(){
+        GedcomXDate.compare('+1980/+1984', '+1893-02-05');
+      }).to.throw(Error, '+1980/+1984 is not a simple date. Can only compare simple dates.');
+    });
+    
+    it('should throw error for bad input', function(){
+      expect(function(){
+        GedcomXDate.compare('+1980', 1985);
+      }).to.throw(Error, 'Bad input. Can only compare simple dates.');
+      expect(function(){
+        GedcomXDate.compare(1980, '+1985');
+      }).to.throw(Error, 'Bad input. Can only compare simple dates.');
+    });
+    
+    it('should work for objects already created', function(){
+      var date1 = new GedcomXDate('+1776'),
+          date2 = new GedcomXDate('+1776');
+      expect(GedcomXDate.compare(date1, date2)).to.equal(0);
+    });
+    
+    it('should work for years', function(){
+      expect(GedcomXDate.compare('+1776', '+1776')).to.equal(0);
+      expect(GedcomXDate.compare('+1880', '+1893')).to.equal(-1);
+      expect(GedcomXDate.compare('+1880', '+1568')).to.equal(1);
+    });
+    
+    it('should work for years and months', function(){
+      expect(GedcomXDate.compare('+1776-03', '+1776-03')).to.equal(0);
+      expect(GedcomXDate.compare('+1776-01', '+1776-03')).to.equal(-1);
+      expect(GedcomXDate.compare('+1776-03', '+1776-01')).to.equal(1);
+      expect(GedcomXDate.compare('+1773-03', '+1776-03')).to.equal(-1);
+      expect(GedcomXDate.compare('+1778-03', '+1776-03')).to.equal(1);
+    });
+    
+    it('should work for years, months, and days', function(){
+      expect(GedcomXDate.compare('+1895-03-13', '+1895-03-13')).to.equal(0);
+      expect(GedcomXDate.compare('+1895-03-08', '+1895-03-13')).to.equal(-1);
+      expect(GedcomXDate.compare('+1895-03-23', '+1895-03-13')).to.equal(1);
+      expect(GedcomXDate.compare('+1852-03-13', '+1895-03-13')).to.equal(-1);
+      expect(GedcomXDate.compare('+1895-08-13', '+1895-03-13')).to.equal(1);
+    });
+    
+    it('should not work for partial dates', function(){
+      expect(function(){
+        GedcomXDate.compare('+1776-03-05', '+1776');
+      }).to.throw(Error, 'Unable to compare dates with different specificities.');
+    });
+    
+    it('should work for equal dates with different times', function(){
+      expect(GedcomXDate.compare('+1485-09-14T13:45:38','+1485-09-14T13:45:38')).to.equal(0);
+      expect(GedcomXDate.compare('+1485-09-14T02:45:38','+1485-09-14T13:45:38')).to.equal(-1);
+      expect(GedcomXDate.compare('+1485-09-14T13:45:51','+1485-09-14T13:45:38')).to.equal(1);
+    });
+    
+    it('should work for approximate dates too', function(){
+      expect(GedcomXDate.compare('A+1895-03-13', '+1895-03-13')).to.equal(0);
+      expect(GedcomXDate.compare('+1895-03-08', 'A+1895-03-13')).to.equal(-1);
+      expect(GedcomXDate.compare('A+1895-03-23', '+1895-03-13')).to.equal(1);
+      expect(GedcomXDate.compare('+1852-03-13', 'A+1895-03-13')).to.equal(-1);
+      expect(GedcomXDate.compare('A+1895-08-13', '+1895-03-13')).to.equal(1);
+    });
+    
+  });
 
 });

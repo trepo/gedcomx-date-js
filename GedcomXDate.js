@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.GedcomXDate = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var util = require('util'),
     Simple = require('./simple.js');
 
@@ -300,7 +300,6 @@ module.exports = Duration;
 },{}],3:[function(require,module,exports){
 var GedUtil = require('./util.js'),
     Simple = require('./simple.js'),
-    Duration = require('./duration.js'),
     Approximate = require('./approximate.js'),
     Recurring = require('./recurring.js'),
     Range = require('./range.js');
@@ -362,8 +361,13 @@ GedcomXDate.now = GedUtil.now;
  */
 GedcomXDate.fromJSDate = GedUtil.fromJSDate;
 
+/**
+ * Expose compare.
+ */
+GedcomXDate.compare = GedUtil.compare;
+
 module.exports = GedcomXDate;
-},{"./approximate.js":1,"./duration.js":2,"./range.js":4,"./recurring.js":5,"./simple.js":6,"./util.js":8}],4:[function(require,module,exports){
+},{"./approximate.js":1,"./range.js":4,"./recurring.js":5,"./simple.js":6,"./util.js":8}],4:[function(require,module,exports){
 var GedUtil = require('./util.js'),
     Simple = require('./simple.js'),
     Duration = require('./duration.js'),
@@ -604,7 +608,7 @@ function Simple() {
  */
 Simple.prototype._parse = function(str) {
 
-  var end = str.length;
+  var end = str.length,
       offset = 0;
 
   // There is a minimum length of 5 characters
@@ -1042,7 +1046,8 @@ module.exports = {
   addDuration: addDuration,
   multiplyDuration: multiplyDuration,
   now: now,
-  fromJSDate: fromJSDate
+  fromJSDate: fromJSDate,
+  compare: compare
 }
 
 /**
@@ -1465,6 +1470,89 @@ function fromJSDate(date){
   // Remove the millisecond time component
   return new Simple('+' + date.toISOString().replace(/\.\d{3}/,''));
 };
+
+/**
+ * Compare two dates. Only works for single dates with the same specificity.
+ * Designed to be usable as a custom compare function for sorting an array of dates.
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+ */
+function compare(date1, date2){
+  
+  // Allow formal strings as input
+  if(isString(date1)){
+    try {
+      if(date1[0] === 'A'){
+        date1 = new Approximate(date1);
+      } else {
+        date1 = new Simple(date1);
+      }
+    } catch(e) {
+      throw new Error(date1 + ' is not a simple date. Can only compare simple dates.')
+    }
+  }
+  if(isString(date2)){
+    try {
+      if(date2[0] === 'A'){
+        date2 = new Approximate(date2);
+      } else {
+        date2 = new Simple(date2);
+      }
+    } catch(e) {
+      throw new Error(date2 + ' is not a simple date. Can only compare simple dates.')
+    }
+  }
+  
+  // Only allow simple dates
+  if(!(date1 instanceof Simple) || !(date2 instanceof Simple)){
+    throw new Error('Bad input. Can only compare simple dates.');
+  }
+  
+  // Compare date parts in descending order
+  var parts = [
+    '_year',
+    '_month',
+    '_day',
+    '_hours',
+    '_minutes',
+    '_seconds'
+  ];
+  
+  // We will short-circuit when we determine whether one
+  // date is greater than the other
+  for(var i = 0; i < parts.length; i++){
+    var part = parts[i];
+    
+    // If these parts match exactly, 
+    if(date1[part] === date2[part]){
+      continue;
+    }
+
+    // We already know that both parts are not undefined, so if one of them
+    // is then we know the dates have different specificities. We can't support
+    // that. See https://github.com/trepo/gedcomx-date-js/pull/12
+    if(typeof date1[part] === 'undefined' || typeof date2[part] === 'undefined'){
+      throw new Error('Unable to compare dates with different specificities.')
+    }
+    
+    // By this point we're guaranteed that this part is defined in both dates
+    // so we can finally do some > and <
+    if(date1[part] > date2[part]){
+      return 1;
+    } else {
+      return -1;
+    }
+    
+  }
+  
+  // If we make it here then the dates are equal
+  return 0;
+  
+};
+
+function isString(obj){
+  return typeof obj === 'string' || obj instanceof String;
+};
+
 },{"./approximate.js":1,"./duration.js":2,"./simple.js":6,"./util-global.js":7}],9:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
@@ -1494,46 +1582,40 @@ if (typeof Object.create === 'function') {
 // shim for using process in browser
 
 var process = module.exports = {};
+var queue = [];
+var draining = false;
 
-process.nextTick = (function () {
-    var canSetImmediate = typeof window !== 'undefined'
-    && window.setImmediate;
-    var canPost = typeof window !== 'undefined'
-    && window.postMessage && window.addEventListener
-    ;
-
-    if (canSetImmediate) {
-        return function (f) { return window.setImmediate(f) };
+function drainQueue() {
+    if (draining) {
+        return;
     }
-
-    if (canPost) {
-        var queue = [];
-        window.addEventListener('message', function (ev) {
-            var source = ev.source;
-            if ((source === window || source === null) && ev.data === 'process-tick') {
-                ev.stopPropagation();
-                if (queue.length > 0) {
-                    var fn = queue.shift();
-                    fn();
-                }
-            }
-        }, true);
-
-        return function nextTick(fn) {
-            queue.push(fn);
-            window.postMessage('process-tick', '*');
-        };
+    draining = true;
+    var currentQueue;
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        var i = -1;
+        while (++i < len) {
+            currentQueue[i]();
+        }
+        len = queue.length;
     }
-
-    return function nextTick(fn) {
-        setTimeout(fn, 0);
-    };
-})();
+    draining = false;
+}
+process.nextTick = function (fun) {
+    queue.push(fun);
+    if (!draining) {
+        setTimeout(drainQueue, 0);
+    }
+};
 
 process.title = 'browser';
 process.browser = true;
 process.env = {};
 process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
 
 function noop() {}
 
@@ -1547,13 +1629,14 @@ process.emit = noop;
 
 process.binding = function (name) {
     throw new Error('process.binding is not supported');
-}
+};
 
 // TODO(shtylman)
 process.cwd = function () { return '/' };
 process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
+process.umask = function() { return 0; };
 
 },{}],11:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
@@ -2151,5 +2234,6 @@ function hasOwnProperty(obj, prop) {
   return Object.prototype.hasOwnProperty.call(obj, prop);
 }
 
-}).call(this,require("FWaASH"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":11,"FWaASH":10,"inherits":9}]},{},[3])
+}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./support/isBuffer":11,"_process":10,"inherits":9}]},{},[3])(3)
+});
