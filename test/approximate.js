@@ -31,6 +31,12 @@ describe('Approximate', function(){
       expect(approximate.isApproximate()).to.equal(true);
     });
 
+    it('should error on +2000-02-99T24:00:00Z', function(){
+      expect(function() {
+        var approximate = new Approximate('A+2000-01-99T24:00:00Z');
+      }).to.throw(Error, 'Invalid Date');
+    });
+
     it('should error on +2000-01-01T24:00:00Z', function(){
       expect(function() {
         var approximate = new Approximate('+2000-01-01T24:00:00Z');

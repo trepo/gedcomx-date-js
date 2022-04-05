@@ -21,7 +21,8 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "browserify": "~3.46.0",
     "chai": "~1.9.1",
-    "browserify": "~3.46.0"
+    "mocha": "^9.2.2"
   }
 }
